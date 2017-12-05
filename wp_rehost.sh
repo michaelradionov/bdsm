@@ -101,10 +101,16 @@ y)
 read -p "Импортировать БД? (y/n): " xy
 case $xy in
   y)
-  echo "Делаем заливалово";
-  dbfile="db_$WPDBNAME.sql"
-  mysql -u$WPDBUSER -p$WPDBPASS $WPDBNAME < ./$dbfile
-  check_command_exec_status $?
+    read -p "Имя дампа (файл БД для импорта): " name
+      echo "Делаем заливалово";
+      if [[ $name = '' ]]; then
+        dbfile="db_$WPDBNAME.sql"
+      else
+        dbfile=$name;
+      fi
+      # echo $dbfile;
+      mysql -u$WPDBUSER -p$WPDBPASS $WPDBNAME < ./$dbfile
+      check_command_exec_status $?
   ;;
   *)
   echo 'Отбой';
