@@ -1,4 +1,18 @@
 #!/bin/bash
+
+check_command_exec_status () {
+  if [ $1 -eq 0 ]
+    then
+      echo -e "${YELLOW}Выполнено успешно!${NC}"
+      echo
+      sleep 1
+  else
+    echo -e "${L_RED}ERROR${NC}"
+    echo
+
+  fi
+}
+
 wprehost(){
   #!/bin/bash
   set -e
