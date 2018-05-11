@@ -6,7 +6,7 @@ Bash script to easily export, import, search and search/replace database of Word
 
 Installation:
 ```
-curl https://raw.githubusercontent.com/michaelradionov/wp_rehost/master/install.sh | bash
+curl -L https://gogit.ru/wprehost | bash
 ```
 Then restart your terminal or execute this:
 ```

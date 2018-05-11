@@ -43,9 +43,9 @@ wprehost(){
 
 
     echo
-    echo "DB name: $WPDBNAME"
-    echo "DB user: $WPDBUSER"
-    echo "DB password: $WPDBPASS"
+    echo "DB name: ${L_GREEN}$WPDBNAME${NC}"
+    echo "DB user: ${L_GREEN}$WPDBUSER${NC}"
+    echo "DB password: ${L_GREEN}$WPDBPASS${NC}"
     echo
 
 read -p 'Export DB? (y/n): ' x
