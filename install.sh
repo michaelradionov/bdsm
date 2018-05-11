@@ -26,9 +26,11 @@ check_command_exec_status () {
 
 echo 'Installing WPREHOST script...'
 
-echo 'Making ~/.gg-tools directory for any Go Git Script'
-mkdir ~/.gg-tools
-check_command_exec_status $?
+if [ ! -d wp-config.php ]; then
+  echo 'Making ~/.gg-tools directory for any Go Git Script'
+  mkdir ~/.gg-tools
+  check_command_exec_status $?
+fi
 
 echo 'Copying script in wprehost.sh'
 curl -s $SCRIPT_URL >> ~/.gg-tools/wprehost.sh
