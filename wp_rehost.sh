@@ -1,18 +1,18 @@
 #!/bin/bash
 
-# Красим
-L_RED='\033[1;31m' # светло-красный цвет
-L_GREEN='\033[1;32m' # светло-зелёный цвет
-YELLOW='\033[1;33m' # жёлтый цвет
-WHITE='\033[1;37m' # белый цвет
-D_GREY='\033[1;30m' # тёмно-серый цвет
-D_VIOL='\033[1;34m' # фиолетовый
-NC='\033[0m' # нет цвета
+# Colors
+L_RED='\033[1;31m'
+L_GREEN='\033[1;32m'
+YELLOW='\033[1;33m'
+WHITE='\033[1;37m'
+D_GREY='\033[1;30m'
+D_VIOL='\033[1;34m'
+NC='\033[0m'
 
 check_command_exec_status () {
   if [ $1 -eq 0 ]
     then
-      echo -e "${YELLOW}Выполнено успешно!${NC}"
+      echo -e "${YELLOW}Success!${NC}"
       echo
       sleep 1
   else
@@ -22,27 +22,20 @@ check_command_exec_status () {
 }
 
 wprehost(){
-  #!/bin/bash
-  set -e
-  # Ищем wp-config.php
+
+  # Looking for wp-config.php
 
   if [ -f wp-config.php ]; then
-      echo "Нашел wp-config.php в текущей директории!"
+      echo "Found wp-config.php in current directory!"
       CONF=wp-config.php
   else
-    if [ -f ../wp-config.php ]; then
-      echo "Нашел wp-config.php уровнем выше!"
-      CONF=../wp-config.php
-    else
-      echo "Не нашел wp-config.php в текущей и родительской директориях"
-      return
-    fi
-
+    echo "Can't find wp-config.php in current directory. Aborting"
+    return
   fi
 
   # cat $CONF
 
-  # Получаем данные для подключения к БД
+  # Retriving credentials for DB connection
 
     WPDBNAME=`cat "$CONF" | grep DB_NAME | cut -d \' -f 4`
     WPDBUSER=`cat "$CONF" | grep DB_USER | cut -d \' -f 4`
@@ -50,83 +43,83 @@ wprehost(){
 
 
     echo
-    echo "Имя базы: $WPDBNAME"
-    echo "Имя юзера: $WPDBUSER"
-    echo "Пароль: $WPDBPASS"
+    echo "DB name: $WPDBNAME"
+    echo "DB user: $WPDBUSER"
+    echo "DB password: $WPDBPASS"
     echo
 
-read -p 'Экспортировать БД? (y/n): ' x
+read -p 'Export DB? (y/n): ' x
 case $x in
 y)
 
   echo
-  echo "Делаю дамп БД";
-  mysqldump -u$WPDBUSER -p$WPDBPASS $WPDBNAME > ./db_$WPDBNAME.sql
-  dbfile="db_$WPDBNAME.sql"
+  echo "Making DB dump...";
+  mysqldump -u$WPDBUSER -p$WPDBPASS $WPDBNAME > ./$WPDBNAME.sql
+  dbfile="$WPDBNAME.sql"
   check_command_exec_status $?
 
-  read -p 'Произвести поиск по дампу БД? (y/n): ' y
+  read -p 'Search in DB dump? (y/n): ' y
     case $y in
       y)
         echo
         echo
-        read -p 'Строка поиска: ' old_domain
+        read -p 'Search string: ' old_domain
         echo
-        echo "Выполняю поиск";
+        echo "Searching...";
 
         find=`grep -o "$old_domain" "$dbfile" | wc -l | tr -d " "`;
         check_command_exec_status $?
 
-        echo "Найдено $find вхождений $old_domain";
+        echo "Found $find occurrences $old_domain";
 
         echo
-        read -p 'Произвести замену строки '$old_domain' в дампе БД? (y/n): ' yy
+        read -p 'Replace '$old_domain' in DB dump? (y/n): ' yy
         case $yy in
           y)
           echo
           echo
-          read -p 'Строка замены: ' new_domain
+          read -p 'Replace string: ' new_domain
           echo
-          echo "Делаем искалово-заменялово";
+          echo "Replacing...";
 
            # sed 's/'$old_domain'/'$new_domain'/g' "$dbfile"
            perl -pi -w -e 's|'$old_domain'|'$new_domain'|g;' "$dbfile"
            check_command_exec_status $?
 
-            read -p "Заливаем? (y/n): " yyy
+            read -p "Import? (y/n): " yyy
             case $yyy in
               y)
-             echo "Делаем заливалово";
+             echo "Importing...";
              mysql -u$WPDBUSER -p$WPDBPASS $WPDBNAME < ./$dbfile
              check_command_exec_status $?
 
-             echo "Удалялово";
+             echo "Deleting dump...";
              rm -f $dbfile
              check_command_exec_status $?
              ;;
              *)
-             echo "Отбой";
+             echo "Abort";
            ;;
-          esac # Заливаем? (y/n)
+         esac # Import
           ;;
           *)
-            echo "Отбой";
+            echo "Abort";
           ;;
-        esac # Произвести замену строки '$old_domain' в дампе БД?
+        esac # Replace
         ;;
       *)
-        echo 'Отбой';
+        echo 'Abort';
         ;;
-  esac # Произвести поиск по дампу БД? (y/n)
+  esac # Search
 ;;
 *)
-read -p "Импортировать БД? (y/n): " xy
+read -p "Import DB? (y/n): " xy
 case $xy in
   y)
-    read -p "Имя дампа (файл БД для импорта): " name
-      echo "Делаем заливалово";
+    read -p "Dump file name (empty for default name): " name
+      echo "Importing...";
       if [[ $name = '' ]]; then
-        dbfile="db_$WPDBNAME.sql"
+        dbfile="$WPDBNAME.sql"
       else
         dbfile=$name;
       fi
@@ -135,9 +128,9 @@ case $xy in
       check_command_exec_status $?
   ;;
   *)
-  echo 'Отбой';
+  echo 'Abort';
   ;;
 esac
 ;;
-esac # Экспортировать БД? (y/n)
+esac # Export DB? (y/n)
 } # wprehost()
