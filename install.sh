@@ -37,7 +37,14 @@ check_command_exec_status $?
 echo "Making backup of your '~/.bashrc' in ~/.bashrc.backup"
 cp ~/.bashrc ~/.bashrc.backup
 check_command_exec_status $?
+
+echo "Adding sourcing line in the end of your .bashrc"
+echo '' >> ~/.bashrc
+echo 'source ~/.gg-tools/wprehost.sh' >> ~/.bashrc
+check_command_exec_status $?
+
 echo ''
-echo -e "Now restart your terminal or run this (yes, dot is a command):"
+echo -e "Now restart your terminal or run this:"
 echo ''
-  echo -e "${L_RED}. ~/.gg-tools/wprehost.sh${NC}";
+echo -e "${L_RED}source ~/.gg-tools/wprehost.sh${NC}";
+echo ''
