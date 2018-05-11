@@ -1,4 +1,4 @@
-![gl](/pic/pic.png)
+![gl](/pic/pic1.png)
 
 # WPREHOST
 
