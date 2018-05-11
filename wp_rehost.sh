@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Красим
+L_RED='\033[1;31m' # светло-красный цвет
+L_GREEN='\033[1;32m' # светло-зелёный цвет
+YELLOW='\033[1;33m' # жёлтый цвет
+WHITE='\033[1;37m' # белый цвет
+D_GREY='\033[1;30m' # тёмно-серый цвет
+D_VIOL='\033[1;34m' # фиолетовый
+NC='\033[0m' # нет цвета
+
 check_command_exec_status () {
   if [ $1 -eq 0 ]
     then
@@ -9,7 +18,6 @@ check_command_exec_status () {
   else
     echo -e "${L_RED}ERROR${NC}"
     echo
-
   fi
 }
 
