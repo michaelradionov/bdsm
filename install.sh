@@ -3,19 +3,19 @@ set -e
 
 SCRIPT_URL='https://raw.githubusercontent.com/michaelradionov/wp_rehost/master/wp_rehost.sh'
 
-# Красим
-L_RED='\033[1;31m' # светло-красный цвет
-L_GREEN='\033[1;32m' # светло-зелёный цвет
-YELLOW='\033[1;33m' # жёлтый цвет
-WHITE='\033[1;37m' # белый цвет
-D_GREY='\033[1;30m' # тёмно-серый цвет
-D_VIOL='\033[1;34m' # фиолетовый
-NC='\033[0m' # нет цвета
+# Colors
+L_RED='\033[1;31m'
+L_GREEN='\033[1;32m'
+YELLOW='\033[1;33m'
+WHITE='\033[1;37m'
+D_GREY='\033[1;30m'
+D_VIOL='\033[1;34m'
+NC='\033[0m'
 
 check_command_exec_status () {
   if [ $1 -eq 0 ]
     then
-      echo -e "${YELLOW}Выполнено успешно!${NC}"
+      echo -e "${YELLOW}Success!${NC}"
       echo
       sleep 1
   else
