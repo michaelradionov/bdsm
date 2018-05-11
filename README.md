@@ -19,6 +19,6 @@ Then restart your terminal or execute this:
 
 ## Usage
 
-1. `cd` in website root directory where `wp-config.php` is,
+1. `cd` in website root directory where `wp-config.php` is
 2. Execute `wprehost`
 3. Follow instructions. Enjoy!
