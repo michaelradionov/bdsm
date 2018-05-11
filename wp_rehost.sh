@@ -29,7 +29,7 @@ wprehost(){
       echo "Found wp-config.php in current directory!"
       CONF=wp-config.php
   else
-    echo "${L_RED}Can't find wp-config.php in current directory. Aborting${NC}"
+    echo -e "${L_RED}Can't find wp-config.php in current directory. Aborting${NC}"
     return
   fi
 
@@ -43,9 +43,9 @@ wprehost(){
 
 
     echo
-    echo "DB name: ${L_GREEN}$WPDBNAME${NC}"
-    echo "DB user: ${L_GREEN}$WPDBUSER${NC}"
-    echo "DB password: ${L_GREEN}$WPDBPASS${NC}"
+    echo -e "DB name: ${L_GREEN}$WPDBNAME${NC}"
+    echo -e "DB user: ${L_GREEN}$WPDBUSER${NC}"
+    echo -e "DB password: ${L_GREEN}$WPDBPASS${NC}"
     echo
 
 read -p 'Export DB? (y/n): ' x
