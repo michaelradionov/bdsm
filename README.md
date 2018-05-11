@@ -1,6 +1,6 @@
 ![gl](/pic/pic1.png)
 
-# WPREHOST
+# WP rehost
 
 Bash script to easily
 - export,
