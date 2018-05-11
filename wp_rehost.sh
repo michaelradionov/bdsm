@@ -29,7 +29,7 @@ wprehost(){
       echo "Found wp-config.php in current directory!"
       CONF=wp-config.php
   else
-    echo "Can't find wp-config.php in current directory. Aborting"
+    echo "${L_RED}Can't find wp-config.php in current directory. Aborting${NC}"
     return
   fi
 
