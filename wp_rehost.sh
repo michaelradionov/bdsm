@@ -70,7 +70,7 @@ y)
         find=`grep -o "$old_domain" "$dbfile" | wc -l | tr -d " "`;
         check_command_exec_status $?
 
-        echo "Found $find occurrences $old_domain";
+        echo "Found $find occurrences of $old_domain";
 
         echo
         read -p 'Replace '$old_domain' in DB dump? (y/n): ' yy
