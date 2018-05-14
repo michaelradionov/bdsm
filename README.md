@@ -14,7 +14,7 @@ curl -L https://gogit.ru/wprehost | bash
 ```
 Then restart your terminal or execute this:
 ```
-. ~/.bashrc
+source ~/.gg-tools/wprehost.sh
 ```
 
 ## Usage
