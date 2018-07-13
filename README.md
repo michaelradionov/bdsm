@@ -13,8 +13,14 @@ Bash script to easily
 - Laravel
 
 ## Installation:
+Fast way (in one step):
 ```
 . <(curl -L https://gogit.ru/wprehost)
+```
+If fast way didn't work (`Failed writing body` error), then try this (2 steps):
+```
+curl -L https://gogit.ru/wprehost | bash
+. ~/.bashrc
 ```
 
 ## Usage
