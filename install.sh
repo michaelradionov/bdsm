@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+# set -e
 
 SCRIPT_URL='https://raw.githubusercontent.com/michaelradionov/wp_rehost/master/wp_rehost.sh'
 
@@ -17,7 +17,6 @@ check_command_exec_status () {
     then
       echo -e "${YELLOW}Success!${NC}"
       echo
-      sleep 1
   else
     echo -e "${L_RED}ERROR${NC}"
     echo
@@ -46,7 +45,6 @@ echo 'source ~/.gg-tools/wprehost.sh' >> ~/.bashrc
 check_command_exec_status $?
 
 echo ''
-echo -e "Now restart your terminal or run this:"
-echo ''
-echo -e "${L_RED}source ~/.gg-tools/wprehost.sh${NC}";
-echo ''
+echo -e "Sourcing ~/.gg-tools/wprehost.sh"
+source ~/.gg-tools/wprehost.sh
+check_command_exec_status $?

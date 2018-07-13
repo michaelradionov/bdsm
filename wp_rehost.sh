@@ -14,7 +14,6 @@ check_command_exec_status () {
     then
       echo -e "${YELLOW}Success!${NC}"
       echo
-      sleep 1
   else
     echo -e "${L_RED}ERROR${NC}"
     echo
