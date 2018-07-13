@@ -6,19 +6,19 @@ Bash script to easily
 - export,
 - import,
 - search
-- search/replace database of WordPress website.
+- search/replace database of your website.
+
+# Supported engines
+- WordPress
+- Laravel
 
 ## Installation:
 ```
-curl -L https://gogit.ru/wprehost | bash
-```
-Then restart your terminal or execute this:
-```
-source ~/.gg-tools/wprehost.sh
+. <(curl -L https://gogit.ru/wprehost)
 ```
 
 ## Usage
 
-1. `cd` in website root directory where `wp-config.php` is
+1. `cd` in website root directory
 2. Execute `wprehost`
 3. Follow instructions. Enjoy!
