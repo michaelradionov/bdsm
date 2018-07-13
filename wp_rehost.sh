@@ -23,29 +23,30 @@ check_command_exec_status () {
 
 wprehost(){
 
-  # Looking for wp-config.php
+  # Looking for wp-config.php (WordPress) or .env (Laravel)
 
   if [ -f wp-config.php ]; then
       echo "Found wp-config.php in current directory!"
+
+      # Retriving credentials for DB connection
       CONF=wp-config.php
+      DB_DATABASE=`cat "$CONF" | grep DB_NAME | cut -d \' -f 4`
+      DB_USERNAME=`cat "$CONF" | grep DB_USER | cut -d \' -f 4`
+      DB_PASSWORD=`cat "$CONF" | grep DB_PASSWORD | cut -d \' -f 4`
+
+  elif [[ -f .env ]]; then
+      echo "Found .env in current directory!"
+      source .env
   else
-    echo -e "${L_RED}Can't find wp-config.php in current directory. Aborting${NC}"
+    echo -e "${L_RED}Can't find neither wp-config.php nor .env in current directory... :(${NC}"
     return
   fi
 
-  # cat $CONF
-
-  # Retriving credentials for DB connection
-
-    WPDBNAME=`cat "$CONF" | grep DB_NAME | cut -d \' -f 4`
-    WPDBUSER=`cat "$CONF" | grep DB_USER | cut -d \' -f 4`
-    WPDBPASS=`cat "$CONF" | grep DB_PASSWORD | cut -d \' -f 4`
-
 
     echo
-    echo -e "DB name: ${L_GREEN}$WPDBNAME${NC}"
-    echo -e "DB user: ${L_GREEN}$WPDBUSER${NC}"
-    echo -e "DB password: ${L_GREEN}$WPDBPASS${NC}"
+    echo -e "DB name: ${L_GREEN}$DB_DATABASE${NC}"
+    echo -e "DB user: ${L_GREEN}$DB_USERNAME${NC}"
+    echo -e "DB password: ${L_GREEN}$DB_PASSWORD${NC}"
     echo
 
 read -p 'Export DB? (y/n): ' x
@@ -54,8 +55,8 @@ y)
 
   echo
   echo "Making DB dump...";
-  mysqldump -u$WPDBUSER -p$WPDBPASS $WPDBNAME > ./$WPDBNAME.sql
-  dbfile="$WPDBNAME.sql"
+  mysqldump -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > ./$DB_DATABASE.sql
+  dbfile="$DB_DATABASE.sql"
   check_command_exec_status $?
 
   read -p 'Search in DB dump? (y/n): ' y
@@ -73,7 +74,7 @@ y)
         echo "Found $find occurrences of $old_domain";
 
         echo
-        read -p 'Replace '$old_domain' in DB dump? (y/n): ' yy
+        read -p "Replace ${old_domain} in DB dump? (y/n): " yy
         case $yy in
           y)
           echo
@@ -82,15 +83,14 @@ y)
           echo
           echo "Replacing...";
 
-           # sed 's/'$old_domain'/'$new_domain'/g' "$dbfile"
-           perl -pi -w -e 's|'$old_domain'|'$new_domain'|g;' "$dbfile"
+           perl -pi -w -e "s|${old_domain}|${new_domain}|g;" "$dbfile"
            check_command_exec_status $?
 
             read -p "Import? (y/n): " yyy
             case $yyy in
               y)
              echo "Importing...";
-             mysql -u$WPDBUSER -p$WPDBPASS $WPDBNAME < ./$dbfile
+             mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE < ./$dbfile
              check_command_exec_status $?
 
              echo "Deleting dump...";
@@ -119,12 +119,12 @@ case $xy in
     read -p "Dump file name (empty for default name): " name
       echo "Importing...";
       if [[ $name = '' ]]; then
-        dbfile="$WPDBNAME.sql"
+        dbfile="$DB_DATABASE.sql"
       else
         dbfile=$name;
       fi
       # echo $dbfile;
-      mysql -u$WPDBUSER -p$WPDBPASS $WPDBNAME < ./$dbfile
+      mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE < ./$dbfile
       check_command_exec_status $?
   ;;
   *)
