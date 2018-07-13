@@ -39,10 +39,16 @@ echo "Making backup of your '~/.bashrc' in ~/.bashrc.backup"
 cp ~/.bashrc ~/.bashrc.backup
 check_command_exec_status $?
 
-echo "Adding sourcing line in the end of your .bashrc"
-echo '' >> ~/.bashrc
-echo 'source ~/.gg-tools/wprehost.sh' >> ~/.bashrc
-check_command_exec_status $?
+echo "Check for line 'source ~/.gg-tools/wprehost.sh' in your '~/.bashrc' file..."
+isInstalled=`grep -n -e 'source ~/.gg-tools/wprehost.sh' ~/.bashrc | cut -d : -f 1`
+if [[ ! $isInstalled ]]; then
+  echo "Adding sourcing line at the end of your .bashrc"
+  echo '' >> ~/.bashrc
+  echo 'source ~/.gg-tools/wprehost.sh' >> ~/.bashrc
+  check_command_exec_status $?
+else
+  echo 'Ok, it is installed already'
+fi
 
 echo ''
 echo -e "Sourcing ~/.gg-tools/wprehost.sh"
