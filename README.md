@@ -12,11 +12,13 @@ Bash script to easily
 - WordPress
 - Laravel
 
-## Installation:
-Fast way (in one step):
+## Installation (fast)
+Fast way (in one step). Worked for me on Linux
 ```
 . <(curl -L https://gogit.ru/wprehost)
 ```
+
+## Installation (Mac)
 If fast way didn't work (`Failed writing body` error), then try this (2 steps):
 ```
 curl -L https://gogit.ru/wprehost | bash
