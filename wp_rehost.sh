@@ -25,6 +25,11 @@ check_command_exec_status () {
 
 # Deletes dump
 deleteDump(){
+   echo
+   if [ ! -f "$dbfile" ]; then
+        echo -e "${L_RED}No ${dbfile} found!${NC}"
+        return
+    fi
   echo "Deleting dump...";
   rm -f $dbfile
   check_command_exec_status $?
@@ -109,15 +114,6 @@ createDump(){
   remote=1
 }
 
-CheckAndSearchInDump(){
-     if [ -f "$dbfile" ]; then
-        SearchInDump
-        else
-            echo -e "${L_RED}No ${dbfile} found!${NC}"
-        return
-    fi
-}
-
 showCredentials(){
   echo
   echo -e "DB name: ${WHITE}$DB_DATABASE${NC}"
@@ -141,6 +137,7 @@ title(){
 
 dumpStats(){
         echo
+        echo -e "Current dir: ${WHITE}$(pwd)${NC}"
         # Config file
         if [[ -z $DB_DATABASE ]]; then
                 echo -e "${L_RED}Can't find neither wp-config.php nor .env in current directory${NC}"
@@ -216,7 +213,8 @@ echo -e "What do you want from me?
     ${WHITE}4.${NC} Search/Replace in dump
     ${WHITE}5.${NC} Import dump
     ${WHITE}6.${NC} Export dump and pull from remote website
-    ${WHITE}7.${NC} Party! Ctrl+C to exit party
+    ${WHITE}7.${NC} Delete Dump
+    ${WHITE}8.${NC} Party! Ctrl+C to exit party
     ${WHITE}9.${NC} Exit"
 read -p "Type number (1-9): " action
 }
@@ -235,8 +233,8 @@ doStuff(){
         createDump
        ;;
     3)
-        title 'CheckAndSearchInDump'
-        CheckAndSearchInDump
+        title 'SearchInDump'
+        SearchInDump
         ;;
     4)
         title 'searchReplaceInDump'
@@ -251,7 +249,10 @@ doStuff(){
         PullDumpFromRemote
         ;;
     7)
-        title "Surprise!"
+        title 'deleteDump'
+        deleteDump
+        ;;
+    8)
         surprise
         ;;
     9)
