@@ -23,13 +23,17 @@ check_command_exec_status () {
   fi
 }
 
+isDumpExists(){
+    if [ ! -f "$dbfile" ]; then
+        echo -e "${L_RED}No DB dump file found!${NC}"
+        return 1
+    fi
+}
+
 # Deletes dump
 deleteDump(){
    echo
-   if [ ! -f "$dbfile" ]; then
-        echo -e "${L_RED}No ${dbfile} found!${NC}"
-        return
-    fi
+  isDumpExists || return
   echo "Deleting dump...";
   rm -f $dbfile
   check_command_exec_status $?
@@ -37,6 +41,7 @@ deleteDump(){
 
 # Imports dump
 importDump(){
+  isDumpExists || return
   echo "Importing...";
   mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE < ./$dbfile
   check_command_exec_status $?
@@ -45,10 +50,7 @@ importDump(){
 # Searches in DB dump
 SearchInDump(){
     echo
-    if [ ! -f "$dbfile" ]; then
-        echo -e "${L_RED}No ${dbfile} found!${NC}"
-        return
-    fi
+    isDumpExists || return
     read -p 'Search string: ' old_domain
     echo
     echo "Searching...";
@@ -62,10 +64,7 @@ SearchInDump(){
 searchReplaceInDump(){
   SearchInDump
   echo
-  if [ ! -f "$dbfile" ]; then
-    echo -e "${L_RED}No ${dbfile} found!${NC}"
-    return
-fi
+  isDumpExists || return
   read -p 'Replace string: ' new_domain
   echo
   echo "Replacing...";
@@ -282,7 +281,6 @@ doStuff(){
 wprehost(){
 
 getCredentials
-
 showdelimiter
 title "Hello from $SCRIPT_NAME script!"
 
@@ -296,4 +294,4 @@ while :
 return
 
 
-} # wprehost()
+}
