@@ -1,4 +1,4 @@
-![gl](/pic/pic1.png)
+![usage](/pic/pic1.png)
 
 # WP rehost
 
