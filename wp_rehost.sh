@@ -200,6 +200,12 @@ PullDumpFromRemote(){
     echo -e "Pulling dump from remote ${remotePath}"
     scp "${remotePath}" "${dbfile}"
     check_command_exec_status
+
+#    Removing dump from remote
+    echo -e "Removing dump from remote ${remotePath}"
+    ssh -t $host "cd $path && rm $remoteDump"
+    check_command_exec_status
+
 #    This is for dumpStats
     remote=2
 }
