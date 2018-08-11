@@ -79,17 +79,24 @@ getCredentials(){
 
 # WordPress
   if [ -f wp-config.php ]; then
-       configFile=wp-config.php
-      # Retrieving credentials for DB connection
-      CONF=wp-config.php
-      DB_DATABASE=`cat "$CONF" | grep DB_NAME | cut -d \' -f 4`
-      DB_USERNAME=`cat "$CONF" | grep DB_USER | cut -d \' -f 4`
-      DB_PASSWORD=`cat "$CONF" | grep DB_PASSWORD | cut -d \' -f 4`
+      configFile=wp-config.php
+      DB_DATABASE=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
+      DB_USERNAME=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
+      DB_PASSWORD=`cat "$configFile" | grep DB_PASSWORD | cut -d \' -f 4`
 
 # Laravel
   elif [[ -f .env ]]; then
       configFile=.env
       source .env
+
+# Prestashop
+  elif [[ -f config/settings.inc.php ]]; then
+      configFile=config/settings.inc.php
+      DB_NAME=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
+      DB_USER=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
+      DB_PASSWD=`cat "$configFile" | grep DB_PASSWORD | cut -d \' -f 4`
+
+# Not found
   else
     DB_DATABASE=''
     DB_USERNAME=''
