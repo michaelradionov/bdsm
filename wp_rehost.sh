@@ -212,7 +212,7 @@ echo -e "What do you want from me?
     ${WHITE}3.${NC} Search in dump
     ${WHITE}4.${NC} Search/Replace in dump
     ${WHITE}5.${NC} Import dump
-    ${WHITE}6.${NC} Export dump and pull from remote website
+    ${WHITE}6.${NC} Pull DB from remote server
     ${WHITE}7.${NC} Delete Dump
     ${WHITE}8.${NC} Party! Ctrl+C to exit party
     ${WHITE}9.${NC} Exit"
