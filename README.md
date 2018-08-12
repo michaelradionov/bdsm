@@ -11,6 +11,8 @@ Bash script to easily
 # Supported engines
 - WordPress
 - Laravel
+- Prestashop 1.6
+- Prestashop 1.7
 
 ## Installation (fast)
 Fast way (in one step). Worked for me on Linux
