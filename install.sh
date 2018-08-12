@@ -1,7 +1,10 @@
 #!/bin/bash
 # set -e
 
-SCRIPT_URL='https://raw.githubusercontent.com/michaelradionov/wp_rehost/master/wp_rehost.sh'
+SCRIPT_URL='https://raw.githubusercontent.com/michaelradionov/bdsm/master/bdsm.sh'
+SCRIPT_NAME='bdsm'
+SCRIPTS_FOLDER=~/.gg_tools
+INSTALL_SCRIPT="for f in ${SCRIPTS_FOLDER}/*; do source "'$f'"; done"
 
 # Colors
 L_RED='\033[1;31m'
@@ -23,34 +26,41 @@ check_command_exec_status () {
   fi
 }
 
-echo 'Installing WPREHOST script...'
+echo "Installing ${SCRIPT_NAME} script..."
 
-if [ ! -d ~/.gg-tools/ ]; then
-  echo 'Making ~/.gg-tools directory for any Go Git Script'
-  mkdir ~/.gg-tools
+# creating scripts directory if doesn't exists
+if [ ! -d  $SCRIPTS_FOLDER ]; then
+  echo -e "Making ${WHITE}${SCRIPTS_FOLDER}${NC} directory for any Go Git Script"
+  mkdir $SCRIPTS_FOLDER
   check_command_exec_status $?
+  else
+  echo -e "Found ${WHITE}${SCRIPTS_FOLDER}${NC} folder. Continuing ..."
 fi
 
-echo 'Copying script in wprehost.sh'
-curl -s $SCRIPT_URL >> ~/.gg-tools/wprehost.sh
+echo -e "Copying script in ${WHITE}${SCRIPT_NAME}.sh${NC}"
+curl -s ${SCRIPT_URL} >> ${SCRIPTS_FOLDER}/${SCRIPT_NAME}.sh
 check_command_exec_status $?
 
-echo "Making backup of your '~/.bashrc' in ~/.bashrc.backup"
-cp ~/.bashrc ~/.bashrc.backup
-check_command_exec_status $?
-
-echo "Check for line 'source ~/.gg-tools/wprehost.sh' in your '~/.bashrc' file..."
-isInstalled=`grep -n -e 'source ~/.gg-tools/wprehost.sh' ~/.bashrc | cut -d : -f 1`
-if [[ ! $isInstalled ]]; then
-  echo "Adding sourcing line at the end of your .bashrc"
-  echo '' >> ~/.bashrc
-  echo 'source ~/.gg-tools/wprehost.sh' >> ~/.bashrc
-  check_command_exec_status $?
+echo -e "Check for line ${WHITE}\"$INSTALL_SCRIPT\"${NC} in your ${WHITE}~/.bashrc${NC} file"
+if grep -qF "${INSTALL_SCRIPT}" ~/.bashrc
+then
+  echo -e "Ok, it is installed already"
 else
-  echo 'Ok, it is installed already'
+
+    echo -e "Making backup of your ${WHITE}~/.bashrc${NC} in ${WHITE}~/.bashrc.backup_$(date +%Y-%m-%d)${NC}"
+    cp ~/.bashrc ~/.bashrc.backup_$(date +%Y-%m-%d)
+    check_command_exec_status $?
+
+  echo -e "Adding sourcing line at the end of your ${WHITE}.bashrc${NC}"
+  echo '' >> ~/.bashrc
+  echo "### ${SCRIPT_NAME} START" >> ~/.bashrc
+  echo "${INSTALL_SCRIPT}" >> ~/.bashrc
+  echo "### ${SCRIPT_NAME} END" >> ~/.bashrc
+  echo '' >> ~/.bashrc
+  check_command_exec_status $?
 fi
 
 echo ''
-echo -e "Sourcing ~/.gg-tools/wprehost.sh"
-source ~/.gg-tools/wprehost.sh
+echo -e "Sourcing ${WHITE}${SCRIPTS_FOLDER}/${SCRIPT_NAME}.sh${NC}"
+source "${SCRIPTS_FOLDER}/${SCRIPT_NAME}.sh"
 check_command_exec_status $?

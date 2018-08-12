@@ -1,6 +1,6 @@
 ![usage](/pic/pic1.png)
 
-# WP rehost
+# BDSM (Bash Database SQL Manager)
 
 Bash script to easily
 - export,
@@ -17,18 +17,18 @@ Bash script to easily
 ## Installation (fast)
 Fast way (in one step). Worked for me on Linux
 ```
-. <(curl -L https://gogit.ru/wprehost)
+. <(curl https://raw.githubusercontent.com/michaelradionov/bdsm/master/install.sh)
 ```
 
 ## Installation (Mac)
 If fast way didn't work (`Failed writing body` error), then try this (2 steps):
 ```
-curl -L https://gogit.ru/wprehost | bash
+curl https://raw.githubusercontent.com/michaelradionov/bdsm/master/install.sh | bash
 . ~/.bashrc
 ```
 
 ## Usage
 
 1. `cd` in website root directory
-2. Execute `wprehost`
+2. Execute `bdsm`
 3. Follow instructions. Enjoy!

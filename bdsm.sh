@@ -1,6 +1,7 @@
 #!/bin/bash
 
-SCRIPT_NAME="WP_REHOST"
+SCRIPT_NAME="bdsm"
+INSTALLER="https://raw.githubusercontent.com/michaelradionov/bdsm/master/install.sh"
 
 # Colors
 L_RED='\033[1;31m'
@@ -75,8 +76,12 @@ searchReplaceInDump(){
 
 # get DB credentials from config file
 getCredentials(){
-  # Looking for config file
 
+unset DB_DATABASE
+unset DB_USERNAME
+unset DB_PASSWORD
+
+# Looking for config file
 # WordPress
   if [ -f wp-config.php ]; then
       appName='WordPress'
@@ -137,10 +142,6 @@ showCredentials(){
   echo -e "DB name: ${WHITE}$DB_DATABASE${NC}"
   echo -e "DB user: ${WHITE}$DB_USERNAME${NC}"
   echo -e "DB password: ${WHITE}$DB_PASSWORD${NC}"
-}
-
-askUserNoVariants(){
-read -p "What do you want from me? (1-9, enter for help): " action
 }
 
 showdelimiter(){
@@ -229,6 +230,14 @@ PullDumpFromRemote(){
     remote=2
 }
 
+selfUpdate(){
+. <(curl ${INSTALLER})
+ check_command_exec_status
+}
+
+askUserNoVariants(){
+read -p "What do you want from me? (1-9 or 'q', enter for help): " action
+}
 
 askUserWithVariants(){
 echo -e "What do you want from me?
@@ -239,9 +248,10 @@ echo -e "What do you want from me?
     ${WHITE}5.${NC} Import dump
     ${WHITE}6.${NC} Pull DB from remote server
     ${WHITE}7.${NC} Delete Dump
-    ${WHITE}8.${NC} Party! Ctrl+C to exit party
-    ${WHITE}9.${NC} Exit"
-read -p "Type number (1-9): " action
+    ${WHITE}8.${NC} Self-update
+    ${WHITE}9.${NC} Party! Ctrl+C to exit party
+    ${WHITE}q.${NC} Exit"
+read -p "Type number (1-9 or 'q'): " action
 }
 
 ###################################################
@@ -279,9 +289,14 @@ doStuff(){
         deleteDump
         ;;
     8)
-        surprise
+        title 'selfUpdate'
+        echo
+        selfUpdate
         ;;
     9)
+        surprise
+        ;;
+    'q')
         title 'Bye!'
         break
         ;;
@@ -300,11 +315,11 @@ doStuff(){
 
 ###########################
 
-wprehost(){
+bdsm(){
 
 getCredentials
 showdelimiter
-title "Hello from $SCRIPT_NAME script!"
+title "Hello from ${YELLOW}${SCRIPT_NAME}${D_VIOL} script!"
 
 while :
     do
