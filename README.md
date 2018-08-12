@@ -17,7 +17,7 @@ Bash script to easily
 ## Installation
 Fast way (in one step). Worked for me on Linux
 ```
-. <(curl https://raw.githubusercontent.com/michaelradionov/bdsm/master/install.sh)
+eval "$(curl "https://raw.githubusercontent.com/michaelradionov/bdsm/master/install.sh")"
 ```
 
 
