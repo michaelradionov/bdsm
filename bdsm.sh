@@ -198,12 +198,45 @@ surprise(){
 
 PullDumpFromRemote(){
     echo
-    read -p "Remote host? For example, root@123.45.12.23: " host
+    echo -e "Remote host?"
+#    Show previous host if it is not empty
+    if [[ ! -z $host ]]; then
+        oldhost=$host
+        echo -e "Previous host: ${WHITE}${host}${NC}";
+    fi
+    read -p "For example, root@123.45.12.23 or enter for previous host: " host
     echo
-    read -p "Path on remote? For example, /path/to/website: " path
+
+    # if user just pushed enter and previous host is empty
+    if [[ -z $host && -z $oldhost ]]; then
+        echo -e "${L_RED}No host!${NC}"
+        return
+    # if user just pushed enter and previous host is NOT empty
+    elif [[ -z $host && ! -z $oldhost ]]; then
+        host=$oldhost
+    fi
+
+    echo -e "Path on remote?"
+#    Show previous path if it is not empty
+    if [[ ! -z $path ]]; then
+        echo -e "Previous path: ${WHITE}${path}${NC}";
+        oldpath=$path
+    fi
+    read -p "For example, /path/to/website or enter for previous path: " path
+    echo
+
+    # if user just pushed enter and previous path is empty
+    if [[ -z $path && -z $oldpath ]]; then
+        echo -e "${L_RED}No path!${NC}"
+        return
+    # if user just pushed enter and previous path is NOT empty
+    elif [[ -z $path && ! -z $oldpath ]]; then
+        path=$oldpath
+    fi
+
     echo -e "Creating dump on remote server"
     echo
-#    Triming trailing slash
+#    Triming trailing slash in path
     path=${path%%+(/)}
 #    Creating dump on remote server and echoing only dump name
     remoteDump=`ssh -t $host "cd $path && $(declare -f getCredentials createDump dumpStats check_command_exec_status); getCredentials; createDump > /dev/null 2>&1 ; dumpStats > /dev/null 2>&1;printf "'$dbfile'`
