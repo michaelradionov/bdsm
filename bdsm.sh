@@ -96,15 +96,6 @@ unset DB_PASSWORD
       configFile=.env
       source .env
 
-# Prestashop 1.6
-  elif grep -qF 'DB_NAME' config/settings.inc.php
-  then
-      appName='Prestashop 1.6'
-      configFile=config/settings.inc.php
-      DB_DATABASE=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
-      DB_USERNAME=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
-      DB_PASSWORD=`cat "$configFile" | grep DB_PASSWD | cut -d \' -f 4`
-
 # Prestashop 1.7
   elif [[ -f app/config/parameters.php ]]; then
       appName='Prestashop 1.7'
@@ -112,6 +103,14 @@ unset DB_PASSWORD
       DB_DATABASE=`cat "$configFile" | grep database_name | cut -d \' -f 4`
       DB_USERNAME=`cat "$configFile" | grep database_user | cut -d \' -f 4`
       DB_PASSWORD=`cat "$configFile" | grep database_password | cut -d \' -f 4`
+
+# Prestashop 1.6
+  elif [[ -f config/settings.inc.php ]]; then
+      appName='Prestashop 1.6'
+      configFile=config/settings.inc.php
+      DB_DATABASE=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
+      DB_USERNAME=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
+      DB_PASSWORD=`cat "$configFile" | grep DB_PASSWD | cut -d \' -f 4`
 
 # Not found
   else
