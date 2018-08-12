@@ -170,8 +170,8 @@ dumpStats(){
             dumpChangeDate=$(date -r $dbfile)
             echo -e "DB dump file: ${WHITE}$dbfile${NC}"
             echo -e "Remote or local dump: $(remoteOrLocalDump)"
-            echo -e "Size: ${WHITE}$dumpSize${NC}"
-            echo -e "Last changed: ${WHITE}$dumpChangeDate${NC}"
+            echo -e "Dump size: ${WHITE}$dumpSize${NC}"
+            echo -e "Dump last changed: ${WHITE}$dumpChangeDate${NC}"
         else
         echo -e "${L_RED}No DB dump found!${NC}"
         fi
