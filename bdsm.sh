@@ -231,7 +231,7 @@ PullDumpFromRemote(){
 }
 
 selfUpdate(){
-. <(curl ${INSTALLER})
+eval "$(curl "${INSTALLER}")"
  check_command_exec_status
 }
 

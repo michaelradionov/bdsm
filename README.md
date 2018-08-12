@@ -14,18 +14,12 @@ Bash script to easily
 - Prestashop 1.6
 - Prestashop 1.7
 
-## Installation (fast)
+## Installation
 Fast way (in one step). Worked for me on Linux
 ```
 . <(curl https://raw.githubusercontent.com/michaelradionov/bdsm/master/install.sh)
 ```
 
-## Installation (Mac)
-If fast way didn't work (`Failed writing body` error), then try this (2 steps):
-```
-curl https://raw.githubusercontent.com/michaelradionov/bdsm/master/install.sh | bash
-. ~/.bashrc
-```
 
 ## Usage
 
