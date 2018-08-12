@@ -38,7 +38,7 @@ if [ ! -d  $SCRIPTS_FOLDER ]; then
 fi
 
 echo -e "Copying script in ${WHITE}${SCRIPT_NAME}.sh${NC}"
-curl -s ${SCRIPT_URL} >> ${SCRIPTS_FOLDER}/${SCRIPT_NAME}.sh
+curl -s ${SCRIPT_URL} > ${SCRIPTS_FOLDER}/${SCRIPT_NAME}.sh
 check_command_exec_status $?
 
 echo -e "Check for line ${WHITE}\"$INSTALL_SCRIPT\"${NC} in your ${WHITE}~/.bashrc${NC} file"
