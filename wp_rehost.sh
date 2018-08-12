@@ -79,6 +79,7 @@ getCredentials(){
 
 # WordPress
   if [ -f wp-config.php ]; then
+      appName='WordPress'
       configFile=wp-config.php
       DB_DATABASE=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
       DB_USERNAME=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
@@ -86,15 +87,26 @@ getCredentials(){
 
 # Laravel
   elif [[ -f .env ]]; then
+      appName='Laravel'
       configFile=.env
       source .env
 
-# Prestashop
-  elif [[ -f config/settings.inc.php ]]; then
+# Prestashop 1.6
+  elif grep -qF 'DB_NAME' config/settings.inc.php
+  then
+      appName='Prestashop 1.6'
       configFile=config/settings.inc.php
-      DB_NAME=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
-      DB_USER=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
-      DB_PASSWD=`cat "$configFile" | grep DB_PASSWORD | cut -d \' -f 4`
+      DB_DATABASE=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
+      DB_USERNAME=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
+      DB_PASSWORD=`cat "$configFile" | grep DB_PASSWD | cut -d \' -f 4`
+
+# Prestashop 1.7
+  elif [[ -f app/config/parameters.php ]]; then
+      appName='Prestashop 1.7'
+      configFile=app/config/parameters.php
+      DB_DATABASE=`cat "$configFile" | grep database_name | cut -d \' -f 4`
+      DB_USERNAME=`cat "$configFile" | grep database_user | cut -d \' -f 4`
+      DB_PASSWORD=`cat "$configFile" | grep database_password | cut -d \' -f 4`
 
 # Not found
   else
@@ -145,9 +157,10 @@ dumpStats(){
         echo
         echo -e "Current dir: ${WHITE}$(pwd)${NC}"
         # Config file
-        if [[ -z $DB_DATABASE ]]; then
-                echo -e "${L_RED}Can't find neither wp-config.php nor .env in current directory${NC}"
+        if [[ ! -f $configFile ]]; then
+                echo -e "${L_RED}Can't find config file!${NC}"
             else
+                echo -e "App name: ${WHITE}$appName${NC}"
                 echo -e "Config file: ${WHITE}$configFile${NC}"
         fi
 
@@ -185,7 +198,7 @@ surprise(){
 
 PullDumpFromRemote(){
     echo
-    read -p "Remote host? For example, root@123.45.12.23 or 47: " host
+    read -p "Remote host? For example, root@123.45.12.23: " host
     echo
     read -p "Path on remote? For example, /path/to/website: " path
     echo -e "Creating dump on remote server"
@@ -238,6 +251,7 @@ doStuff(){
     case $action in
     1)
         title 'showCredentials'
+        getCredentials
         showCredentials
         ;;
     2)
@@ -274,6 +288,7 @@ doStuff(){
     *)
 #        default
         title 'Need help?'
+        getCredentials
         dumpStats
         showdelimiter
         askUserWithVariants
