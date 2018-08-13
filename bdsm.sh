@@ -78,6 +78,7 @@ searchReplaceInDump(){
 # get DB credentials from config file
 getCredentials(){
 
+unset configFile
 unset DB_DATABASE
 unset DB_USERNAME
 unset DB_PASSWORD
@@ -87,6 +88,14 @@ unset DB_PASSWORD
   if [ -f wp-config.php ]; then
       appName='WordPress'
       configFile=wp-config.php
+      DB_DATABASE=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
+      DB_USERNAME=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
+      DB_PASSWORD=`cat "$configFile" | grep DB_PASSWORD | cut -d \' -f 4`
+
+# WordPress from wp-content. Long story. We have some oldest repos in wp-content folder
+  elif [ -f ../wp-config.php ]; then
+      appName='WordPress'
+      configFile=../wp-config.php
       DB_DATABASE=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
       DB_USERNAME=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
       DB_PASSWORD=`cat "$configFile" | grep DB_PASSWORD | cut -d \' -f 4`
