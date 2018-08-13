@@ -330,7 +330,7 @@ doStuff(){
         ;;
     'q')
         title 'Bye!'
-        exit
+        return
         ;;
     *)
 #        default
