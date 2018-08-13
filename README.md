@@ -20,7 +20,7 @@ Bash script to easily
 Please request your engine by creating new issue on Github! Give me your engine's config file example and I'll add it to the script. 👍
 
 ## Installation
-Fast way (in one step). Worked for me on Linux
+Fast way (in one step). Worked on Mac, Linux and Windows (terminals with bash support)
 ```
 eval "$(curl "https://raw.githubusercontent.com/michaelradionov/bdsm/master/install.sh")"
 ```
