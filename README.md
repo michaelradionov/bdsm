@@ -1,4 +1,5 @@
 ![usage](/pic/logo.jpg)
+![usage](/pic/pic1.png)
 
 # BDSM (Bash Database SQL Manager)
 
@@ -32,4 +33,3 @@ eval "$(curl "https://raw.githubusercontent.com/michaelradionov/bdsm/master/inst
 3. Follow instructions. Enjoy!
 4. ~~Donate~~. Nah! Just give this repo a star and I will appreciate it! ⭐️
 
-![usage](/pic/pic1.png)
