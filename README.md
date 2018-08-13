@@ -31,5 +31,17 @@ eval "$(curl "https://raw.githubusercontent.com/michaelradionov/bdsm/master/inst
 1. `cd` in website root directory
 2. Execute `bdsm`
 3. Follow instructions. Enjoy!
-4. ~~Donate~~. Nah! Just give this repo a star and I will appreciate it! ⭐️
+4. ~~💰 Donate~~. Nah! Just give this repo a star and I will appreciate it! ⭐️
+
+## Requirements
+
+- Bash support. Check by executing `bash --version`
+- Mysql CLI support. Check by executing `mysql --version` and `mysqldump --version`
+- cURL CLI support. Check by executing `curl --version`
+- Sourcing ~/.bashrc file on session start. Check by: 
+    1. executing `echo 'echo "It works"' >> ~/.bashrc`
+    2. then start new terminal session. If you see "It works!" then you good. 
+    3. Then **delete** this line from your ~/.bashrc.
+- For the previous item. If you don't know where is ~/.bashrc, you should execute `cd` (without parameters), then `pwd`. Output will be your home path, it equals `~`.
+- If you have literally ANY trouble with installing and using script, please, create an issue in Github repo https://github.com/michaelradionov/bdsm.
 
