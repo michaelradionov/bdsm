@@ -25,6 +25,7 @@ check_command_exec_status () {
 }
 
 isDumpExists(){
+# If dump soesn't exists
     if [ ! -f "$dbfile" ]; then
         echo -e "${L_RED}No DB dump file found!${NC}"
         return 1
@@ -330,7 +331,7 @@ doStuff(){
         ;;
     'q')
         title 'Bye!'
-        break
+        return 1
         ;;
     *)
 #        default
@@ -358,7 +359,7 @@ while :
         showdelimiter
         askUserNoVariants
         showdelimiter
-        doStuff
+        doStuff || break
     done
 return
 
