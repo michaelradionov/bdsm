@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# BDSM – Bash Database SQL Manager
+# https://github.com/michaelradionov/bdsm
+
+
 SCRIPT_NAME="bdsm"
 INSTALLER="https://raw.githubusercontent.com/michaelradionov/bdsm/master/install.sh"
 
