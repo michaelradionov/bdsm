@@ -5,7 +5,6 @@
 
 
 SCRIPT_NAME="bdsm"
-INSTALLER="https://raw.githubusercontent.com/michaelradionov/bdsm/master/install.sh"
 
 # Colors
 L_RED='\033[1;31m'
@@ -277,12 +276,31 @@ PullDumpFromRemote(){
 }
 
 selfUpdate(){
-eval "$(curl "${INSTALLER}")"
+eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer bdsm
  check_command_exec_status
 }
 
+installOtherScripts(){
+echo -e "What script do you want to install?
+    ${WHITE}1.${NC} Go Git Aliases — ${YELLOW}https://github.com/michaelradionov/git-alias${NC}
+    ${WHITE}2.${NC} HelloBash — ${YELLOW}https://github.com/michaelradionov/helloBash${NC}"
+    read -p "Type number: " script
+    case $script in
+    1)
+        title "Installing Go Git Aliases"
+        echo -e "Check it out at https://github.com/michaelradionov/git-alias"
+        eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer gg_aliases
+       ;;
+     2)
+        title "Installing Hello Bash"
+        echo -e "Check it out at https://github.com/michaelradionov/helloBash"
+        eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer hello_bash
+        ;;
+    esac
+}
+
 askUserNoVariants(){
-read -p "What do you want from me? (1-9 or 'q', enter for help): " action
+read -p "What do you want from me? (1-9, 'q' or enter for help): " action
 }
 
 askUserWithVariants(){
@@ -295,9 +313,10 @@ echo -e "What do you want from me?
     ${WHITE}6.${NC} Pull DB from remote server
     ${WHITE}7.${NC} Delete Dump
     ${WHITE}8.${NC} Self-update
-    ${WHITE}9.${NC} Party! Ctrl+C to exit party
+    ${WHITE}9.${NC} Install other scripts ${YELLOW}NEW!${NC}
+    ${WHITE}p.${NC} Party! Ctrl+C to exit party
     ${WHITE}q.${NC} Exit"
-read -p "Type number (1-9 or 'q'): " action
+read -p "Type number (1-9 or 'q' for exit): " action
 }
 
 ###################################################
@@ -340,6 +359,11 @@ doStuff(){
         selfUpdate
         ;;
     9)
+        title 'installOtherScripts'
+        echo
+        installOtherScripts
+        ;;
+    'p')
         surprise
         ;;
     'q')
