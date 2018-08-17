@@ -22,7 +22,7 @@ Please request your engine by creating new issue on Github! Give me your engine'
 
 ## Installation
 Fast way (in one step). Worked on Mac, Linux and Windows (terminals with bash support)
-```
+```shell
 eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer bdsm
 ```
 
