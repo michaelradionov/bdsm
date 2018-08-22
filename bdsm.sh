@@ -253,7 +253,7 @@ PullDumpFromRemote(){
     path=${path%%+(/)}
 #    Creating dump on remote server and echoing only dump name
     remoteDump=`ssh -t $host "cd $path && $(declare -f getCredentials createDump check_command_exec_status); getCredentials; createDump > /dev/null 2>&1 ; printf "'$dbfile'`
-    check_command_exec_status
+    check_command_exec_status $?
 
 #    In case $dbfile is not set
      if [ ! -f "$dbfile" ]; then
@@ -264,12 +264,12 @@ PullDumpFromRemote(){
     remotePath="${host}:${path}/${remoteDump}"
     echo -e "Pulling dump from remote ${remotePath}"
     scp "${remotePath}" "${dbfile}"
-    check_command_exec_status
+    check_command_exec_status $?
 
 #    Removing dump from remote
     echo -e "Removing dump from remote ${remotePath}"
     ssh -t $host "cd $path && rm $remoteDump"
-    check_command_exec_status
+    check_command_exec_status $?
 
 #    This is for dumpStats
     remote=2
@@ -277,7 +277,7 @@ PullDumpFromRemote(){
 
 selfUpdate(){
 eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer bdsm
- check_command_exec_status
+ check_command_exec_status $?
 }
 
 installOtherScripts(){
