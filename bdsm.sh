@@ -48,7 +48,7 @@ deleteDump(){
 importDump(){
   isDumpExists || return
   echo "Importing...";
-  mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE < ./$dbfile
+  mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE --force < ./$dbfile
   check_command_exec_status $?
 }
 
