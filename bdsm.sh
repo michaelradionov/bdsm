@@ -52,6 +52,24 @@ importDump(){
   check_command_exec_status $?
 }
 
+# Look for dump
+FindDump(){
+  read -p "Enter dump's path (type path to dump, q to exit): " enterDump
+  case $enterDump in
+    'q' )
+    return
+      ;;
+    *)
+    if [[ -f "$enterDump" ]]; then
+      echo -e "Ok, I found it. Will look here in next operations."
+      dbfile=$enterDump
+    else
+      echo -e "${L_RED}Can't find it!${NC}"
+    fi
+    ;;
+  esac
+}
+
 # Searches in DB dump
 SearchInDump(){
     echo
@@ -313,7 +331,8 @@ echo -e "What do you want from me?
     ${WHITE}6.${NC} Pull DB from remote server
     ${WHITE}7.${NC} Delete Dump
     ${WHITE}8.${NC} Self-update
-    ${WHITE}9.${NC} Install other scripts ${YELLOW}NEW!${NC}
+    ${WHITE}9.${NC} Install other scripts ${L_RED}HOT!${NC}
+    ${WHITE}10.${NC} Look for dump elsewhere locally ${YELLOW}NEW!${NC}
     ${WHITE}p.${NC} Party! Ctrl+C to exit party
     ${WHITE}q.${NC} Exit"
 read -p "Type number (1-9 or 'q' for exit): " action
@@ -363,6 +382,11 @@ doStuff(){
         echo
         installOtherScripts
         ;;
+    10)
+      title 'FindDump'
+      echo
+      FindDump
+    ;;
     'p')
         surprise
         ;;
