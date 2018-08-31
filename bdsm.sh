@@ -70,6 +70,21 @@ FindDump(){
   esac
 }
 
+# Enter credentials manually
+EnterCredentials(){
+      read -p "Enter DB name: " DB_DATABASE
+      read -p "Enter DB user: " DB_USERNAME
+      read -p "Enter DB password: " DB_PASSWORD
+}
+
+# Forget credentials and dump
+ForgetEverything(){
+    unset dbfile
+    unset DB_DATABASE
+    unset DB_USERNAME
+    unset DB_PASSWORD
+}
+
 # Searches in DB dump
 SearchInDump(){
     echo
@@ -100,9 +115,9 @@ searchReplaceInDump(){
 getCredentials(){
 
 unset configFile
-unset DB_DATABASE
-unset DB_USERNAME
-unset DB_PASSWORD
+#    unset DB_DATABASE
+#    unset DB_USERNAME
+#    unset DB_PASSWORD
 
 # Looking for config file
 # WordPress
@@ -144,10 +159,10 @@ unset DB_PASSWORD
       DB_PASSWORD=`cat "$configFile" | grep DB_PASSWD | cut -d \' -f 4`
 
 # Not found
-  else
-    DB_DATABASE=''
-    DB_USERNAME=''
-    DB_PASSWORD=''
+#  else
+#    DB_DATABASE=''
+#    DB_USERNAME=''
+#    DB_PASSWORD=''
   fi
 
 }
@@ -332,7 +347,11 @@ echo -e "What do you want from me?
     ${WHITE}7.${NC} Delete Dump
     ${WHITE}8.${NC} Self-update
     ${WHITE}9.${NC} Install other scripts ${L_RED}HOT!${NC}
+
     ${WHITE}10.${NC} Look for dump elsewhere locally ${YELLOW}NEW!${NC}
+    ${WHITE}11.${NC} Enter credentials manually ${YELLOW}NEW!${NC}
+    ${WHITE}12.${NC} Forget credentials and dumpfile ${YELLOW}NEW!${NC}
+
     ${WHITE}p.${NC} Party! Ctrl+C to exit party
     ${WHITE}q.${NC} Exit"
 read -p "Type number (1-9 or 'q' for exit): " action
@@ -386,6 +405,16 @@ doStuff(){
       title 'FindDump'
       echo
       FindDump
+    ;;
+    11)
+      title 'EnterCredentials'
+      echo
+      EnterCredentials
+    ;;
+    12)
+      title 'ForgetEverything'
+      echo
+      ForgetEverything
     ;;
     'p')
         surprise
