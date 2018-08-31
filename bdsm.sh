@@ -91,7 +91,7 @@ SearchInDump(){
     isDumpExists || return
     read -p 'Search string: ' old_domain
     echo
-    echo "Searching...";
+    echo -e "Searching for ${WHITE}${old_domain}${NC} in ${WHITE}${dbfile}${NC}";
     find=`grep -o "$old_domain" "$dbfile" | wc -l | tr -d " "`;
     check_command_exec_status $?
     echo -e "Found ${WHITE}$find${NC} occurrences of $old_domain";
@@ -105,7 +105,7 @@ searchReplaceInDump(){
   isDumpExists || return
   read -p 'Replace string: ' new_domain
   echo
-  echo "Replacing...";
+  echo -e "Replacing ${WHITE}${old_domain}${NC} with ${WHITE}${new_domain}${NC} in ${WHITE}${dbfile}${NC}";
 
    perl -pi -w -e "s|${old_domain}|${new_domain}|g;" "$dbfile"
    check_command_exec_status $?
