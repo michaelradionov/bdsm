@@ -1,5 +1,5 @@
 ![usage](/pic/logo.jpg)
-![usage](/pic/pic1.png)
+![usage](/pic/pic2.png)
 
 # BDSM (Bash Database SQL Manager)
 
@@ -9,7 +9,8 @@ Bash script to easily
 - import DB,
 - search in DB,
 - search/replace in DB,
-- pull database from remote server.
+- pull database from remote server,
+- and lot more. Look at the screenshot above!
 
 # Supported engines
 - WordPress
