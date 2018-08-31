@@ -316,7 +316,8 @@ eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/mas
 installOtherScripts(){
 echo -e "What script do you want to install?
     ${WHITE}1.${NC} Go Git Aliases — ${YELLOW}https://github.com/michaelradionov/git-alias${NC}
-    ${WHITE}2.${NC} HelloBash — ${YELLOW}https://github.com/michaelradionov/helloBash${NC}"
+    ${WHITE}2.${NC} HelloBash — ${YELLOW}https://github.com/michaelradionov/helloBash${NC}
+    ${WHITE}3.${NC} Install Micro Editor — ${YELLOW}https://gist.github.com/michaelradionov/156daa2058d004f8bfe9356f7f2bf5de${NC}"
     read -p "Type number: " script
     case $script in
     1)
@@ -324,11 +325,16 @@ echo -e "What script do you want to install?
         echo -e "Check it out at https://github.com/michaelradionov/git-alias"
         eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer gg_aliases
        ;;
-     2)
-        title "Installing Hello Bash"
-        echo -e "Check it out at https://github.com/michaelradionov/helloBash"
-        eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer hello_bash
-        ;;
+   2)
+      title "Installing Hello Bash"
+      echo -e "Check it out at https://github.com/michaelradionov/helloBash"
+      eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer hello_bash
+      ;;
+    3)
+       title "Installing Micro Editor"
+       echo -e "Check it out at https://gist.github.com/michaelradionov/156daa2058d004f8bfe9356f7f2bf5de"
+       cd ; curl https://getmic.ro | bash; echo 'alias m="~/micro"' >> .bashrc; source ~/.bashrc;
+       ;;
     esac
 }
 
