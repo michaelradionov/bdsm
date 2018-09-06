@@ -321,7 +321,8 @@ installOtherScripts(){
 echo -e "What script do you want to install?
     ${WHITE}1.${NC} Go Git Aliases — ${YELLOW}https://github.com/michaelradionov/git-alias${NC}
     ${WHITE}2.${NC} HelloBash — ${YELLOW}https://github.com/michaelradionov/helloBash${NC}
-    ${WHITE}3.${NC} Install Micro Editor — ${YELLOW}https://gist.github.com/michaelradionov/156daa2058d004f8bfe9356f7f2bf5de${NC}"
+    ${WHITE}3.${NC} Install Micro Editor — ${YELLOW}https://gist.github.com/michaelradionov/156daa2058d004f8bfe9356f7f2bf5de${NC}
+    ${WHITE}4.${NC} Install Docker Aliases — ${YELLOW}https://github.com/michaelradionov/docker_aliases${NC}"
     read -p "Type number: " script
     case $script in
     1)
@@ -339,6 +340,11 @@ echo -e "What script do you want to install?
        echo -e "Check it out at https://gist.github.com/michaelradionov/156daa2058d004f8bfe9356f7f2bf5de"
        cd ; curl https://getmic.ro | bash; echo 'alias m="~/micro"' >> .bashrc; source ~/.bashrc;
        ;;
+   4)
+      title "Installing Docker Aliases"
+      echo -e "Check it out at https://github.com/michaelradionov/docker_aliases"
+      eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer docker_aliases
+      ;;
     esac
 }
 
