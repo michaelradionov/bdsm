@@ -48,7 +48,7 @@ deleteDump(){
 importDump(){
   isDumpExists || return
   echo "Importing...";
-  mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE --force < ./$dbfile
+  mysql -u$DB_USERNAME -p$DB_PASSWORD -h$DB_HOST $DB_DATABASE --force < ./$dbfile
   check_command_exec_status $?
 }
 
@@ -72,6 +72,7 @@ FindDump(){
 
 # Enter credentials manually
 EnterCredentials(){
+      read -p "Enter Mysql hos: " DB_HOST
       read -p "Enter DB name: " DB_DATABASE
       read -p "Enter DB user: " DB_USERNAME
       read -p "Enter DB password: " DB_PASSWORD
@@ -124,6 +125,7 @@ unset configFile
   if [ -f wp-config.php ]; then
       appName='WordPress'
       configFile=wp-config.php
+      DB_HOST=`cat "$configFile" | grep DB_HOST | cut -d \' -f 4`
       DB_DATABASE=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
       DB_USERNAME=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
       DB_PASSWORD=`cat "$configFile" | grep DB_PASSWORD | cut -d \' -f 4`
@@ -132,6 +134,7 @@ unset configFile
   elif [ -f ../wp-config.php ]; then
       appName='WordPress'
       configFile=../wp-config.php
+      DB_HOST=`cat "$configFile" | grep DB_HOST | cut -d \' -f 4`
       DB_DATABASE=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
       DB_USERNAME=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
       DB_PASSWORD=`cat "$configFile" | grep DB_PASSWORD | cut -d \' -f 4`
@@ -175,7 +178,7 @@ createDump(){
      return
   fi
   echo "Making DB dump...";
-  mysqldump -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > ./$DB_DATABASE.sql
+  mysqldump -u$DB_USERNAME -p$DB_PASSWORD -h$DB_HOST $DB_DATABASE > ./$DB_DATABASE.sql
   dbfile="$DB_DATABASE.sql"
   check_command_exec_status $?
 #    This is for dumpStats
@@ -184,6 +187,7 @@ createDump(){
 
 showCredentials(){
   echo
+  echo -e "DB host: ${WHITE}$DB_HOST${NC}"
   echo -e "DB name: ${WHITE}$DB_DATABASE${NC}"
   echo -e "DB user: ${WHITE}$DB_USERNAME${NC}"
   echo -e "DB password: ${WHITE}$DB_PASSWORD${NC}"
