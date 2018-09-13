@@ -78,13 +78,6 @@ EnterCredentials(){
       read -p "Enter DB password: " DB_PASSWORD
 }
 
-# Forget credentials and dump
-ForgetEverything(){
-    unset dbfile
-    unset DB_DATABASE
-    unset DB_USERNAME
-    unset DB_PASSWORD
-}
 
 # Searches in DB dump
 SearchInDump(){
@@ -359,14 +352,12 @@ echo -e "What do you want from me?
     ${WHITE}3.${NC} Search in dump
     ${WHITE}4.${NC} Search/Replace in dump
     ${WHITE}5.${NC} Import dump
-    ${WHITE}6.${NC} Pull DB from remote server
+    ${WHITE}6.${NC} Pull DB from remote server ${L_RED}HOT!${NC}
     ${WHITE}7.${NC} Delete Dump
     ${WHITE}8.${NC} Self-update
     ${WHITE}9.${NC} Install other scripts ${L_RED}HOT!${NC}
-
-    ${WHITE}10.${NC} Look for dump elsewhere locally ${YELLOW}NEW!${NC}
-    ${WHITE}11.${NC} Enter credentials manually ${YELLOW}NEW!${NC}
-    ${WHITE}12.${NC} Forget credentials and dumpfile ${YELLOW}NEW!${NC}
+    ${WHITE}10.${NC} Look for dump elsewhere locally
+    ${WHITE}11.${NC} Enter credentials manually
 
     ${WHITE}p.${NC} Party! Ctrl+C to exit party
     ${WHITE}q.${NC} Exit"
@@ -426,11 +417,6 @@ doStuff(){
       title 'EnterCredentials'
       echo
       EnterCredentials
-    ;;
-    12)
-      title 'ForgetEverything'
-      echo
-      ForgetEverything
     ;;
     'p')
         surprise
