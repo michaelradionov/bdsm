@@ -345,7 +345,7 @@ PullDumpFromRemote(){
 }
 
 getFirstMysqlContainer(){
-    container=$(docker ps | grep mysql | awk '{print $1}')
+    container=$(docker ps --format {{.Names}} | grep mysql)
 }
 
 selfUpdate(){
