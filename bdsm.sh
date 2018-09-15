@@ -207,7 +207,7 @@ showCredentials(){
   echo -e "DB user: ${WHITE}$DB_USERNAME${NC}"
   echo -e "DB password: ${WHITE}$DB_PASSWORD${NC}"
   echo
-  dumpStats
+#  dumpStats
 }
 
 showdelimiter(){
