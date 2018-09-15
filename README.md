@@ -1,5 +1,5 @@
 ![usage](/pic/logo.jpg)
-![usage](/pic/pic2.png)
+![usage](/pic/pic.png)
 
 # BDSM (Bash Database SQL Manager)
 
