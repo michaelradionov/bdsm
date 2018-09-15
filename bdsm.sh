@@ -48,8 +48,15 @@ deleteDump(){
 importDump(){
   isDumpExists || return
   echo "Importing...";
-  mysql -u$DB_USERNAME -p$DB_PASSWORD -h$DB_HOST $DB_DATABASE --force < ./$dbfile
-  check_command_exec_status $?
+    if [[ -z $container ]]; then
+    # Not in Docker mode
+      mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE --force < ./$dbfile
+      check_command_exec_status $?
+  else
+    # Docker mode
+    cat $dbfile | docker exec -i $container /usr/bin/mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE
+    check_command_exec_status $?
+  fi
 }
 
 # Look for dump
@@ -175,9 +182,16 @@ createDump(){
      return
   fi
   echo "Making DB dump...";
-  mysqldump -u$DB_USERNAME -p$DB_PASSWORD -h$DB_HOST $DB_DATABASE > ./$DB_DATABASE.sql
+  if [[ -z $container ]]; then
+    # Not in Docker mode
+    mysqldump -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > ./$DB_DATABASE.sql
+    check_command_exec_status $?
+  else
+    # Docker mode
+    docker exec $container /usr/bin/mysqldump -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > $DB_DATABASE.sql
+    check_command_exec_status $?
+  fi
   dbfile="$DB_DATABASE.sql"
-  check_command_exec_status $?
 #    This is for dumpStats
   remote=1
 }
@@ -222,6 +236,10 @@ dumpStats(){
         else
         echo -e "${L_RED}No DB dump found!${NC}"
         fi
+        # Docker container
+          if [[ ! -z $container ]]; then
+            echo -e "Docker container: ${WHITE}$container${NC}"
+          fi
 }
 
 # Determines if dump made from local or remote DB
@@ -281,12 +299,17 @@ PullDumpFromRemote(){
         path=$oldpath
     fi
 
+
+
+
+
+
     echo -e "Creating dump on remote server"
     echo
 #    Triming trailing slash in path
     path=${path%%+(/)}
 #    Creating dump on remote server and echoing only dump name
-    remoteDump=`ssh -t $host "cd $path && $(declare -f getCredentials createDump check_command_exec_status); getCredentials; createDump > /dev/null 2>&1 ; printf "'$dbfile'`
+    remoteDump=`ssh -t $host "cd $path && $(declare -f getCredentials createDump check_command_exec_status getFirstMysqlContainer); getCredentials; getFirstMysqlContainer  > /dev/null 2>&1 ; createDump > /dev/null 2>&1 ; printf "'$dbfile'`
     check_command_exec_status $?
 
 #    In case $dbfile is not set
@@ -307,6 +330,10 @@ PullDumpFromRemote(){
 
 #    This is for dumpStats
     remote=2
+}
+
+getFirstMysqlContainer(){
+    container=$(docker ps | grep mysql | awk '{print $1}')
 }
 
 selfUpdate(){
@@ -356,12 +383,13 @@ echo -e "What do you want from me?
     ${WHITE}3.${NC} Search in dump
     ${WHITE}4.${NC} Search/Replace in dump
     ${WHITE}5.${NC} Import dump
-    ${WHITE}6.${NC} Pull DB from remote server ${L_RED}HOT!${NC}
+    ${WHITE}6.${NC} Pull DB from remote server (with Docker support) ${L_RED}HOT!${NC}
     ${WHITE}7.${NC} Delete Dump
     ${WHITE}8.${NC} Self-update
     ${WHITE}9.${NC} Install other scripts ${L_RED}HOT!${NC}
     ${WHITE}10.${NC} Look for dump elsewhere locally
     ${WHITE}11.${NC} Enter credentials manually
+    ${WHITE}12.${NC} Toggle Local Docker Mode (to work with local containers) ${YELLOW}NEW!${NC}
 
     ${WHITE}p.${NC} Party! Ctrl+C to exit party
     ${WHITE}q.${NC} Exit"
@@ -421,6 +449,11 @@ doStuff(){
       title 'EnterCredentials'
       echo
       EnterCredentials
+    ;;
+    12)
+      title 'ToggleDockerMode'
+      echo
+      ToggleDockerMode
     ;;
     'p')
         surprise
