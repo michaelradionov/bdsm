@@ -186,14 +186,16 @@ createDump(){
     # Not in Docker mode
     mysqldump -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > ./$DB_DATABASE.sql
     check_command_exec_status $?
+    #    This is for dumpStats
+      remote=1
   else
     # Docker mode
     docker exec $container /usr/bin/mysqldump -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > $DB_DATABASE.sql
     check_command_exec_status $?
+    #    This is for dumpStats
+    remote=3
   fi
   dbfile="$DB_DATABASE.sql"
-#    This is for dumpStats
-  remote=1
 }
 
 showCredentials(){
@@ -252,6 +254,9 @@ remoteOrLocalDump(){
     elif [[ $remote -eq 2 ]]; then
 #       Remote
         echo -e "${YELLOW}Remote (${remotePath})${NC}"
+    elif [[ $remote -eq 3 ]]; then
+#       Remote
+        echo -e "${D_GREY}Local from Docker container${NC}"
      else
         echo -e "Not sure ..."
     fi
