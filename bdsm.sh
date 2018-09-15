@@ -47,13 +47,14 @@ deleteDump(){
 # Imports dump
 importDump(){
   isDumpExists || return
-  echo "Importing...";
     if [[ -z $container ]]; then
     # Not in Docker mode
+      echo "Importing locally";
       mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE --force < ./$dbfile
       check_command_exec_status $?
   else
     # Docker mode
+    echo "Importing in Docker Container";
     cat $dbfile | docker exec -i $container /usr/bin/mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE
     check_command_exec_status $?
   fi
@@ -181,15 +182,16 @@ createDump(){
      echo -e "${L_RED}Sorry, credentials is not set :(${NC}"
      return
   fi
-  echo "Making DB dump...";
   if [[ -z $container ]]; then
     # Not in Docker mode
+    echo "Making DB dump locally";
     mysqldump -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > ./$DB_DATABASE.sql
     check_command_exec_status $?
     #    This is for dumpStats
       remote=1
   else
     # Docker mode
+    echo "Making DB dump from Docker container";
     docker exec $container /usr/bin/mysqldump -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > $DB_DATABASE.sql
     check_command_exec_status $?
     #    This is for dumpStats
