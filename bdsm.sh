@@ -385,20 +385,14 @@ echo -e "What script do you want to install?
 }
 
 ChooseDockerContainer(){
-    read -p "Enter container name to enable Docker Mode. Leave empty to let BDSM grep first container with 'mysql' verb: " container
+    read -p "Enter container name, type 'forget' to forget OR leave empty to let BDSM find one: " container
     if [[ -z $container ]]; then
         getFirstMysqlContainer
+    elif [[ $container == 'forget' ]]; then
+        unset container
     fi
 }
 
-resetAll(){
-    unset configFile
-    unset container
-    unset dbfile
-    unset DB_DATABASE
-    unset DB_USERNAME
-    unset DB_PASSWORD
-}
 
 askUserNoVariants(){
     read -p "What do you want from me? (type number of action, 'q' or enter for help): " action
@@ -417,8 +411,7 @@ echo -e "What do you want from me?
     ${WHITE}9.${NC} Install other scripts ${L_RED}HOT!${NC}
     ${WHITE}10.${NC} Look for dump elsewhere locally
     ${WHITE}11.${NC} Enter credentials manually
-    ${WHITE}12.${NC} Choose local Docker container ${YELLOW}NEW!${NC}
-    ${WHITE}13.${NC} Forget all (credentials, dump, config and container)
+    ${WHITE}12.${NC} Choose/forget local Docker container ${YELLOW}NEW!${NC}
 
     ${WHITE}p.${NC} Party! Ctrl+C to exit party
     ${WHITE}q.${NC} Exit"
@@ -483,11 +476,6 @@ doStuff(){
       title 'ChooseDockerContainer'
       echo
       ChooseDockerContainer
-    ;;
-    13)
-      title 'resetAll'
-      echo
-      resetAll
     ;;
     'p')
         surprise
