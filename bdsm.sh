@@ -177,8 +177,8 @@ unset configFile
 # Creates DB dump
 createDump(){
   echo
-  if [[ -z $DB_DATABASE ]]; then
-     echo -e "${L_RED}Can't find neither wp-config.php nor .env in current directory${NC}"
+  if [[ -z $DB_DATABASE ]] || [[ -z $DB_USERNAME ]] || [[ -z $DB_PASSWORD ]]; then
+     echo -e "${L_RED}Sorry, credentials is not set :(${NC}"
      return
   fi
   echo "Making DB dump...";
@@ -202,6 +202,8 @@ showCredentials(){
   echo -e "DB name: ${WHITE}$DB_DATABASE${NC}"
   echo -e "DB user: ${WHITE}$DB_USERNAME${NC}"
   echo -e "DB password: ${WHITE}$DB_PASSWORD${NC}"
+  echo
+  dumpStats
 }
 
 showdelimiter(){
@@ -281,6 +283,10 @@ PullDumpFromRemote(){
         host=$oldhost
     fi
 
+
+
+
+
     echo -e "Path on remote?"
 #    Show previous path if it is not empty
     if [[ ! -z $path ]]; then
@@ -319,6 +325,7 @@ PullDumpFromRemote(){
 
 #    Pulling dump from remote
     remotePath="${host}:${path}/${remoteDump}"
+    dbfile=$remoteDump
     echo -e "Pulling dump from remote ${remotePath}"
     scp "${remotePath}" "${dbfile}"
     check_command_exec_status $?
@@ -372,8 +379,12 @@ echo -e "What script do you want to install?
     esac
 }
 
+ToggleDockerMode(){
+    read -p "Enter container name to enable Docker Mode. Leave empty to disable Docker mode: " container
+}
+
 askUserNoVariants(){
-read -p "What do you want from me? (1-9, 'q' or enter for help): " action
+    read -p "What do you want from me? (type number of action, 'q' or enter for help): " action
 }
 
 askUserWithVariants(){
@@ -393,7 +404,7 @@ echo -e "What do you want from me?
 
     ${WHITE}p.${NC} Party! Ctrl+C to exit party
     ${WHITE}q.${NC} Exit"
-read -p "Type number (1-9 or 'q' for exit): " action
+read -p "Type number (type number of action or 'q' for exit): " action
 }
 
 ###################################################
