@@ -413,7 +413,7 @@ echo -e "What do you want from me?
     ${WHITE}10.${NC} Look for dump elsewhere locally
     ${WHITE}11.${NC} Enter credentials manually
     ${WHITE}12.${NC} Choose local Docker container ${YELLOW}NEW!${NC}
-    ${WHITE}13.${NC} Forget all (DB credentials, DB dump location, Config file and Docker container)
+    ${WHITE}13.${NC} Forget all (credentials, dump, config and container)
 
     ${WHITE}p.${NC} Party! Ctrl+C to exit party
     ${WHITE}q.${NC} Exit"
