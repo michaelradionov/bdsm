@@ -97,7 +97,11 @@ searchReplaceInDump(){
   SearchInDump
   echo
   isDumpExists || return
-  read -p 'Replace string: ' new_domain
+  read -p 'Replace string (q to exit): ' new_domain
+  if [[ $new_domain == "q" ]] || [[ -z $new_domain ]]; then
+      echo -e "${L_RED}Not doing search/replace!${NC}"
+      return 0
+  fi
   echo
   echo -e "Replacing ${WHITE}${old_domain}${NC} with ${WHITE}${new_domain}${NC} in ${WHITE}${dbfile}${NC}";
 
