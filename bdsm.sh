@@ -414,7 +414,7 @@ doStuff(){
     case $action in
     1)
         title 'showCredentials'
-        getCredentials
+#        getCredentials
         showCredentials
         ;;
     2)
@@ -476,7 +476,7 @@ doStuff(){
     *)
 #        default
         title 'Need help?'
-        getCredentials
+#        getCredentials
         dumpStats
         showdelimiter
         askUserWithVariants
