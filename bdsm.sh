@@ -379,8 +379,20 @@ echo -e "What script do you want to install?
     esac
 }
 
-ToggleDockerMode(){
-    read -p "Enter container name to enable Docker Mode. Leave empty to disable Docker mode: " container
+ChooseDockerContainer(){
+    read -p "Enter container name to enable Docker Mode. Leave empty to let BDSM grep first container with 'mysql' verb: " container
+    if [[ -z $container ]]; then
+        getFirstMysqlContainer
+    fi
+}
+
+resetAll(){
+    unset configFile
+    unset container
+    unset dbfile
+    unset DB_DATABASE
+    unset DB_USERNAME
+    unset DB_PASSWORD
 }
 
 askUserNoVariants(){
@@ -400,7 +412,8 @@ echo -e "What do you want from me?
     ${WHITE}9.${NC} Install other scripts ${L_RED}HOT!${NC}
     ${WHITE}10.${NC} Look for dump elsewhere locally
     ${WHITE}11.${NC} Enter credentials manually
-    ${WHITE}12.${NC} Toggle Local Docker Mode (to work with local containers) ${YELLOW}NEW!${NC}
+    ${WHITE}12.${NC} Choose local Docker container ${YELLOW}NEW!${NC}
+    ${WHITE}13.${NC} Forget all (DB credentials, DB dump location, Config file and Docker container)
 
     ${WHITE}p.${NC} Party! Ctrl+C to exit party
     ${WHITE}q.${NC} Exit"
@@ -462,9 +475,14 @@ doStuff(){
       EnterCredentials
     ;;
     12)
-      title 'ToggleDockerMode'
+      title 'ChooseDockerContainer'
       echo
-      ToggleDockerMode
+      ChooseDockerContainer
+    ;;
+    13)
+      title 'resetAll'
+      echo
+      resetAll
     ;;
     'p')
         surprise
