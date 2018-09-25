@@ -178,7 +178,7 @@ unset configFile
 # Creates DB dump
 createDump(){
   echo
-  if [[ -z $DB_DATABASE ]] || [[ -z $DB_USERNAME ]] || [[ -z $DB_PASSWORD ]]; then
+  if [[ -z $DB_DATABASE ]] || [[ -z $DB_USERNAME ]]; then
      echo -e "${L_RED}Sorry, credentials is not set :(${NC}"
      return
   fi
