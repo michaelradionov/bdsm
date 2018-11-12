@@ -357,15 +357,13 @@ eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/mas
 
 installOtherScripts(){
 echo -e "What script do you want to install?
-    ${WHITE}0.${NC} Install Micro Editor (Mac & Linux) — ${YELLOW}https://gist.github.com/michaelradionov/156daa2058d004f8bfe9356f7f2bf5de${NC}
-
-    
     ${WHITE}1.${NC} Go Git Aliases — ${YELLOW}https://github.com/michaelradionov/aliases${NC}
     ${WHITE}2.${NC} HelloBash — ${YELLOW}https://github.com/michaelradionov/helloBash${NC}
-    ${WHITE}3.${NC} Install Docker Aliases — ${YELLOW}https://github.com/michaelradionov/aliases${NC}
-    ${WHITE}4.${NC} Install Laravel Aliases — ${YELLOW}https://github.com/michaelradionov/aliases${NC}
-    ${WHITE}5.${NC} Install Jira Aliases — ${YELLOW}https://github.com/michaelradionov/aliases${NC}
-    ${WHITE}6.${NC} Install Random Aliases — ${YELLOW}https://github.com/michaelradionov/aliases${NC}"
+    ${WHITE}3.${NC} Install Micro Editor (Mac & Linux) — ${YELLOW}https://gist.github.com/michaelradionov/156daa2058d004f8bfe9356f7f2bf5de${NC}
+    ${WHITE}4.${NC} Install Docker Aliases — ${YELLOW}https://github.com/michaelradionov/aliases${NC}
+    ${WHITE}5.${NC} Install Laravel Aliases — ${YELLOW}https://github.com/michaelradionov/aliases${NC}
+    ${WHITE}6.${NC} Install Jira Aliases — ${YELLOW}https://github.com/michaelradionov/aliases${NC}
+    ${WHITE}7.${NC} Install Random Aliases — ${YELLOW}https://github.com/michaelradionov/aliases${NC}"
     read -p "Type number: " script
     case $script in
     1)
