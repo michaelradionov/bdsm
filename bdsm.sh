@@ -367,42 +367,68 @@ echo -e "What script do you want to install?
     read -p "Type number: " script
     case $script in
     1)
-        title "Installing Go Git Aliases"
-        echo -e "Check it out at https://github.com/michaelradionov/git-alias"
-        eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer gg_aliases
+        InstallGoGitAliases
        ;;
    2)
-      title "Installing Hello Bash"
-      echo -e "Check it out at https://github.com/michaelradionov/helloBash"
-      eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer hello_bash
+        InstallHelloBash
       ;;
     3)
-       title "Installing Micro Editor"
-       echo -e "Check it out at https://gist.github.com/michaelradionov/156daa2058d004f8bfe9356f7f2bf5de"
-       cd ; curl https://getmic.ro | bash; echo 'alias m="~/micro"' >> .bashrc; source ~/.bashrc;
+        InstallMicroEditor
        ;;
    4)
-      title "Installing Docker Aliases"
-      echo -e "Check it out at https://github.com/michaelradionov/aliases"
-      eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer docker_aliases
+        InstallDockerAliases
       ;;
     5)
-       title "Installing Laravel Aliases"
-       echo -e "Check it out at https://github.com/michaelradionov/aliases"
-       eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer laravel_aliases
+        InstallLaravelAliases
        ;;
    6)
-      title "Installing Jira Aliases"
-      echo -e "Check it out at https://github.com/michaelradionov/aliases"
-      eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer jira_aliases
+        InstallJiraAliases
       ;;
   7)
-     title "Installing Random Aliases"
-     echo -e "Check it out at https://github.com/michaelradionov/aliases"
-     eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer random_aliases
+        InstallRandomAliases
      ;;
     esac
 }
+
+InstallGoGitAliases(){
+        title "Installing Go Git Aliases"
+        echo -e "Check it out at https://github.com/michaelradionov/git-alias"
+        eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer gg_aliases
+}
+InstallHelloBash(){
+      title "Installing Hello Bash"
+      echo -e "Check it out at https://github.com/michaelradionov/helloBash"
+      eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer hello_bash
+}
+InstallMicroEditor(){
+       title "Installing Micro Editor"
+       echo -e "Check it out at https://gist.github.com/michaelradionov/156daa2058d004f8bfe9356f7f2bf5de"
+       cd ; curl https://getmic.ro | bash; echo 'alias m="~/micro"' >> .bashrc; source ~/.bashrc;
+}
+InstallDockerAliases(){
+      title "Installing Docker Aliases"
+      echo -e "Check it out at https://github.com/michaelradionov/aliases"
+      eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer docker_aliases
+}
+InstallLaravelAliases(){
+       title "Installing Laravel Aliases"
+       echo -e "Check it out at https://github.com/michaelradionov/aliases"
+       eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer laravel_aliases
+}
+InstallJiraAliases(){
+      title "Installing Jira Aliases"
+      echo -e "Check it out at https://github.com/michaelradionov/aliases"
+      eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer jira_aliases
+
+}
+InstallRandomAliases(){
+     title "Installing Random Aliases"
+     echo -e "Check it out at https://github.com/michaelradionov/aliases"
+     eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer random_aliases
+
+}
+
+
 
 ChooseDockerContainer(){
     read -p "Enter container name, type 'forget' to forget OR leave empty to let BDSM find one: " container
@@ -520,6 +546,19 @@ doStuff(){
 ###########################
 
 bdsm(){
+
+if [[ $1 == "--install-all" ]]; then
+    title "Installing ALL the stuff"
+    InstallGoGitAliases
+    InstallHelloBash
+    InstallMicroEditor
+    InstallDockerAliases
+    InstallLaravelAliases
+    InstallJiraAliases
+    InstallRandomAliases
+    return
+fi
+
 
 getCredentials
 showdelimiter
