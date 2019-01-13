@@ -26,7 +26,10 @@ Fast way (in one step). Worked on Mac, Linux and Windows (terminals with bash su
 ```shell
 eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer bdsm
 ```
-
+Since BDSM can install other usefull scripts, you can install ALL OF THEM simply running
+```
+bdsm --install-all
+```
 
 ## Usage
 
