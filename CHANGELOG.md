@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Exporting dump in non-interactive mode to use it programmatically, for example, to schedule backuping every day by Cron.
 - Choosing dump file from list, not typing its name
 - Choosing Docker container from list, not typing its name
+
+## [0.0.1] - 2019-01-13
+### Added
+- Changelog!
+
 <!--
 ## [1.0.0] - 2017-06-20
 ### Added
