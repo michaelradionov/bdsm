@@ -24,7 +24,7 @@ Bash script to easily
 
 Please request your engine by creating new issue on Github! Give me your engine's config file example and I'll add it to the script. 👍
 
-## Installation
+# Installation
 Fast way (in one step). Worked on Mac, Linux and Windows (terminals with bash support)
 ```shell
 eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer bdsm
@@ -34,7 +34,7 @@ Since BDSM can install other usefull scripts, you can install ALL OF THEM simply
 bdsm --install-all
 ```
 
-## Usage
+# Usage
 
 1. `cd` in website root directory
 2. Execute `bdsm`
@@ -70,7 +70,7 @@ bdsm --install-all
     3. Quit Docker mode
 
 
-## Requirements
+# Requirements
 
 - **Bash support.** Check by executing `bash --version`
 - **Mysql CLI support.** Check by executing `mysql --version` and `mysqldump --version`
@@ -82,3 +82,7 @@ bdsm --install-all
 - For the previous item. If you don't know where is ~/.bashrc, you should execute `cd` (without parameters), then `pwd`. Output will be your home path, it equals `~`.
 
 If you have literally ANY trouble with installing and using script, please, create an issue in Github repo https://github.com/michaelradionov/bdsm.
+
+# Changelog
+
+[Changelog](https://github.com/michaelradionov/bdsm/blob/master/CHANGELOG.md)
