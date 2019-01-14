@@ -185,14 +185,14 @@ createDump(){
   if [[ -z $container ]]; then
     # Not in Docker mode
     echo "Making DB dump locally";
-    mysqldump -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > ./$DB_DATABASE.sql
+    mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > ./$DB_DATABASE.sql
     check_command_exec_status $?
     #    This is for dumpStats
       remote=1
   else
     # Docker mode
     echo "Making DB dump from Docker container";
-    docker exec $container /usr/bin/mysqldump -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > $DB_DATABASE.sql
+    docker exec $container /usr/bin/mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > $DB_DATABASE.sql
     check_command_exec_status $?
     #    This is for dumpStats
     remote=3
