@@ -56,9 +56,13 @@ importDump(){
 #    PostgreSQL
     if [[ $DB_CONNECTION == "pgsql" ]]; then
       echo "Droping DB...";
-      PGPASSWORD=$DB_PASSWORD dropdb -U $DB_USERNAME $DB_DATABASE
+      PGPASSWORD=$DB_PASSWORD dropdb -U $DB_USERNAME $DB_DATABASE && \
+#      check_command_exec_status $?
+
       echo "Creating DB...";
-      PGPASSWORD=$DB_PASSWORD createdb -U $DB_USERNAME $DB_DATABASE
+      PGPASSWORD=$DB_PASSWORD createdb -U $DB_USERNAME $DB_DATABASE && \
+#      check_command_exec_status $?
+
       echo "Importing dump...";
       PGPASSWORD=$DB_PASSWORD psql --quiet -U $DB_USERNAME  $DB_DATABASE < ./$dbfile
     fi
