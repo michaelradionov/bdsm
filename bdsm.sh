@@ -8,7 +8,6 @@ SCRIPT_NAME="bdsm"
 
 # Colors
 L_RED='\033[1;31m'
-L_GREEN='\033[1;32m'
 YELLOW='\033[1;33m'
 WHITE='\033[1;37m'
 D_GREY='\033[1;30m'
@@ -50,12 +49,31 @@ importDump(){
     if [[ -z $container ]]; then
     # Not in Docker mode
       echo "Importing locally";
+#      MySQL
+    if [[ $DB_CONNECTION == "mysql" ]]; then
       mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE --force < ./$dbfile
+    fi
+#    PostgreSQL
+    if [[ $DB_CONNECTION == "pgsql" ]]; then
+        PGPASSWORD=$DB_PASSWORD psql -U $DB_USER  $DB_DATABASE < ./$dbfile
+    fi
       check_command_exec_status $?
   else
     # Docker mode
     echo "Importing in Docker Container";
-    cat $dbfile | docker exec -i $container /usr/bin/mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE
+#    MySQL
+    if [[ $DB_CONNECTION == "mysql" ]]; then
+      cat $dbfile | docker exec -i $container /usr/bin/mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE
+    fi
+#    PostgreSQL
+    if [[ $DB_CONNECTION == "pgsql" ]]; then
+      echo "Droping DB...";
+      docker exec -i $container /usr/local/bin/dropdb $DB_DATABASE
+      echo "Creating DB...";
+      docker exec -i $container /usr/local/bin/createdb $DB_DATABASE
+      echo "Importing dump...";
+      cat $dbfile | docker exec -i $container /usr/local/bin/psql --quiet -U $DB_USERNAME -d $DB_DATABASE
+    fi
     check_command_exec_status $?
   fi
 }
@@ -84,6 +102,7 @@ EnterCredentials(){
       read -p "Enter DB name: " DB_DATABASE
       read -p "Enter DB user: " DB_USERNAME
       read -p "Enter DB password: " DB_PASSWORD
+      read -p "Enter DB connection (mysql or pgsql): " DB_CONNECTION
 }
 
 
@@ -134,6 +153,7 @@ unset configFile
       DB_DATABASE=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
       DB_USERNAME=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
       DB_PASSWORD=`cat "$configFile" | grep DB_PASSWORD | cut -d \' -f 4`
+      DB_CONNECTION='mysql'
 
 # WordPress from wp-content. Long story. We have some oldest repos in wp-content folder
   elif [ -f ../wp-config.php ]; then
@@ -143,6 +163,7 @@ unset configFile
       DB_DATABASE=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
       DB_USERNAME=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
       DB_PASSWORD=`cat "$configFile" | grep DB_PASSWORD | cut -d \' -f 4`
+      DB_CONNECTION='mysql'
 
 # Laravel
   elif [[ -f .env ]]; then
@@ -157,6 +178,7 @@ unset configFile
       DB_DATABASE=`cat "$configFile" | grep database_name | cut -d \' -f 4`
       DB_USERNAME=`cat "$configFile" | grep database_user | cut -d \' -f 4`
       DB_PASSWORD=`cat "$configFile" | grep database_password | cut -d \' -f 4`
+      DB_CONNECTION='mysql'
 
 # Prestashop 1.6
   elif [[ -f config/settings.inc.php ]]; then
@@ -165,6 +187,7 @@ unset configFile
       DB_DATABASE=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
       DB_USERNAME=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
       DB_PASSWORD=`cat "$configFile" | grep DB_PASSWD | cut -d \' -f 4`
+      DB_CONNECTION='mysql'
 
 # Not found
 #  else
@@ -185,14 +208,30 @@ createDump(){
   if [[ -z $container ]]; then
     # Not in Docker mode
     echo "Making DB dump locally";
-    mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > ./$DB_DATABASE.sql
+
+#    MySQL connection
+    if [[ $DB_CONNECTION == "mysql" ]]; then
+      mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > ./$DB_DATABASE.sql
+    fi
+
+#    PostgreSQL connection
+    if [[ $DB_CONNECTION == "pgsql" ]]; then
+        PGPASSWORD=$DB_PASSWORD pg_dump -U $DB_USER  $DB_DATABASE > ./$DB_DATABASE.sql
+    fi
+
     check_command_exec_status $?
     #    This is for dumpStats
       remote=1
   else
     # Docker mode
     echo "Making DB dump from Docker container";
-    docker exec $container /usr/bin/mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > $DB_DATABASE.sql
+    if [[ $DB_CONNECTION == "mysql" ]]; then
+      docker exec $container /usr/bin/mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > $DB_DATABASE.sql
+    fi
+    if [[ $DB_CONNECTION == "pgsql" ]]; then
+      docker exec $container /usr/local/bin/pg_dump $DB_DATABASE > $DB_DATABASE.sql
+    fi
+
     check_command_exec_status $?
     #    This is for dumpStats
     remote=3
@@ -203,6 +242,7 @@ createDump(){
 showCredentials(){
   echo
 #  echo -e "DB host: ${WHITE}$DB_HOST${NC}"
+  echo -e "DB connection: ${WHITE}$DB_CONNECTION${NC}"
   echo -e "DB name: ${WHITE}$DB_DATABASE${NC}"
   echo -e "DB user: ${WHITE}$DB_USERNAME${NC}"
   echo -e "DB password: ${WHITE}$DB_PASSWORD${NC}"
@@ -236,6 +276,7 @@ dumpStats(){
             dumpSize=$(du -k -h $dbfile | cut -f1 | tr -d ' ')
             dumpChangeDate=$(date -r $dbfile)
             echo -e "DB dump file: ${WHITE}$dbfile${NC}"
+            echo -e "DB type: ${WHITE}$DB_CONNECTION${NC}"
             echo -e "Remote or local dump: $(remoteOrLocalDump)"
             echo -e "Dump size: ${WHITE}$dumpSize${NC}"
             echo -e "Dump last changed: ${WHITE}$dumpChangeDate${NC}"
@@ -278,7 +319,7 @@ PullDumpFromRemote(){
         oldhost=$host
         echo -e "Previous host: ${WHITE}${host}${NC}";
     fi
-    read -p "For example, root@123.45.12.23 or enter for previous host: " host
+    read -p "For example, root@123.45.12.23 or just hit 'enter' for previous host: " host
     echo
 
     # if user just pushed enter and previous host is empty
@@ -322,7 +363,7 @@ PullDumpFromRemote(){
 #    Triming trailing slash in path
     path=${path%%+(/)}
 #    Creating dump on remote server and echoing only dump name
-    remoteDump=`ssh -t $host "cd $path && $(declare -f getCredentials createDump check_command_exec_status getFirstMysqlContainer); getCredentials; getFirstMysqlContainer  > /dev/null 2>&1 ; createDump > /dev/null 2>&1 ; printf "'$dbfile'`
+    remoteDump=`ssh -t $host "cd $path && $(declare -f getCredentials createDump check_command_exec_status getFirstContainer); getCredentials; getFirstContainer  > /dev/null 2>&1 ; createDump > /dev/null 2>&1 ; printf "'$dbfile'`
     check_command_exec_status $?
 
 #    In case $dbfile is not set
@@ -346,8 +387,13 @@ PullDumpFromRemote(){
     remote=2
 }
 
-getFirstMysqlContainer(){
+getFirstContainer(){
+  if [[ $DB_CONNECTION == "mysql" ]]; then
     container=$(docker ps --format {{.Names}} | grep mysql)
+  fi
+  if [[ $DB_CONNECTION == "pgsql" ]]; then
+    container=$(docker ps --format {{.Names}} | grep postgres)
+  fi
 }
 
 selfUpdate(){
@@ -433,7 +479,7 @@ InstallRandomAliases(){
 ChooseDockerContainer(){
     read -p "Enter container name, type 'forget' to forget OR leave empty to let BDSM find one: " container
     if [[ -z $container ]]; then
-        getFirstMysqlContainer
+        getFirstContainer
     elif [[ $container == 'forget' ]]; then
         unset container
     fi
