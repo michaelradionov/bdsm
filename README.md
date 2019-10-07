@@ -21,6 +21,7 @@ Bash script to easily
 
 # Supported databases
 - MySQL
+- PostgreSQL
 
 Please request your engine by creating new issue on Github! Give me your engine's config file example and I'll add it to the script. 👍
 
