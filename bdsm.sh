@@ -27,7 +27,7 @@ check_command_exec_status () {
 }
 
 isDumpExists(){
-# If dump soesn't exists
+# If dump doesn't exists
     if [ ! -f "$dbfile" ]; then
         echo -e "${L_RED}No DB dump file found!${NC}"
         return 1
@@ -238,7 +238,7 @@ createDump(){
       docker exec $container /usr/bin/mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > $DB_DATABASE.sql
     fi
     if [[ $DB_CONNECTION == "pgsql" ]]; then
-      docker exec $container /usr/local/bin/pg_dump $DB_DATABASE > $DB_DATABASE.sql
+      docker exec $container /usr/local/bin/pg_dump -U $DB_USERNAME $DB_DATABASE > $DB_DATABASE.sql
     fi
 
     check_command_exec_status $?
