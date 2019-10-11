@@ -56,17 +56,21 @@ importDump(){
 #    PostgreSQL
     if [[ $DB_CONNECTION == "pgsql" ]]; then
       echo "Droping DB...";
-      PGPASSWORD=$DB_PASSWORD dropdb -U $DB_USERNAME $DB_DATABASE && \
-#      check_command_exec_status $?
+      PGPASSWORD=$DB_PASSWORD dropdb -U $DB_USERNAME $DB_DATABASE
 
+      if [[ $? -eq 0 ]]; then
       echo "Creating DB...";
-      PGPASSWORD=$DB_PASSWORD createdb -U $DB_USERNAME $DB_DATABASE && \
-#      check_command_exec_status $?
+      PGPASSWORD=$DB_PASSWORD createdb -U $DB_USERNAME $DB_DATABASE
+        if [[ $? -eq 0 ]]; then
+          echo "Importing dump...";
+          PGPASSWORD=$DB_PASSWORD psql --quiet -U $DB_USERNAME  $DB_DATABASE < ./$dbfile
+          check_command_exec_status $?
+        fi
+      else
+          check_command_exec_status 1
+      fi
 
-      echo "Importing dump...";
-      PGPASSWORD=$DB_PASSWORD psql --quiet -U $DB_USERNAME  $DB_DATABASE < ./$dbfile
     fi
-      check_command_exec_status $?
   else
     # Docker mode
     echo "Importing in Docker Container";
@@ -76,14 +80,25 @@ importDump(){
     fi
 #    PostgreSQL
     if [[ $DB_CONNECTION == "pgsql" ]]; then
+
       echo "Droping DB...";
       docker exec -i $container /usr/local/bin/dropdb -U $DB_USERNAME $DB_DATABASE
-      echo "Creating DB...";
-      docker exec -i $container /usr/local/bin/createdb -U $DB_USERNAME $DB_DATABASE
-      echo "Importing dump...";
-      cat $dbfile | docker exec -i $container /usr/local/bin/psql --quiet -U $DB_USERNAME -d $DB_DATABASE
+
+      if [[ $? -eq 0 ]]; then
+
+        echo "Creating DB...";
+        docker exec -i $container /usr/local/bin/createdb -U $DB_USERNAME $DB_DATABASE
+
+        if [[ $? -eq 0 ]]; then
+
+          echo "Importing dump...";
+          cat $dbfile | docker exec -i $container /usr/local/bin/psql --quiet -U $DB_USERNAME -d $DB_DATABASE
+          check_command_exec_status $?
+        fi
+      else
+        check_command_exec_status 1
+      fi
     fi
-    check_command_exec_status $?
   fi
 }
 
