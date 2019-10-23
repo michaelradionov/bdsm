@@ -27,9 +27,21 @@ Please request your engine by creating new issue on Github! Give me your engine'
 
 # Installation
 Fast way (in one step). Worked on Mac, Linux and Windows (terminals with bash support)
+
+Stable version
+
 ```shell
 eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer bdsm
 ```
+
+Nightly version
+
+
+```shell
+eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer bdsm_nightly
+```
+
+
 Since BDSM can install other usefull scripts, you can install ALL OF THEM simply running
 ```
 bdsm --install-all
