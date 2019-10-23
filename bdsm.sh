@@ -393,7 +393,7 @@ PullDumpFromRemote(){
 #    Triming trailing slash in path
     path=${path%%+(/)}
 #    Creating dump on remote server and echoing only dump name
-    remoteDump=`ssh -t $host "cd $path && $(declare -f getCredentials createDump check_command_exec_status getFirstContainer); getCredentials; getFirstContainer  > /dev/null 2>&1 ; createDump > /dev/null 2>&1 ; printf "'$dbfile'`
+    remoteDump=`ssh -t $host "cd $path && $(declare -f getCredentials createDump check_command_exec_status getFirstContainer generateDumpName); getCredentials; getFirstContainer  > /dev/null 2>&1 ; createDump > /dev/null 2>&1 ; printf "'$dbfile'`
     check_command_exec_status $?
 
 #    In case $dbfile is not set
