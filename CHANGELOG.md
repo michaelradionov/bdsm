@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Choosing dump file from list, not typing its name
 - Choosing Docker container from list, not typing its name
 
+## [0.2.0] - 2019-10-23
+### Added
+- PostgresSQL support
+- Nightly builds to keep stable version stable all the time
+
 ## [0.0.1] - 2019-01-13
 ### Added
 - Changelog!
