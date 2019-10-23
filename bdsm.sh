@@ -5,6 +5,7 @@
 
 
 SCRIPT_NAME="bdsm"
+BACKUP_FOLDER=db_backups
 
 # Colors
 L_RED='\033[1;31m'
@@ -509,6 +510,16 @@ ChooseDockerContainer(){
     fi
 }
 
+createBackupFolder(){
+  if [ ! -d $BACKUP_FOLDER ]; then
+      echo -e "Making ${WHITE}${BACKUP_FOLDER}${NC} directory for database backups..."
+      mkdir $BACKUP_FOLDER
+      check_command_exec_status $?
+  else
+      echo -e "Found ${WHITE}${BACKUP_FOLDER}${NC} folder. Continuing ..."
+  fi
+}
+
 
 askUserNoVariants(){
     read -p "What do you want from me? (type number of action, 'q' or enter for help): " action
@@ -631,6 +642,7 @@ fi
 
 
 getCredentials
+createBackupFolder
 showdelimiter
 title "Hello from ${YELLOW}${SCRIPT_NAME}${D_VIOL} script!"
 
