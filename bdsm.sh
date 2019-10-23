@@ -223,6 +223,11 @@ unset configFile
 
 }
 
+generateDumpName(){
+  dump_name="${DB_DATABASE}_${DB_CONNECTION}_$(date +%Y-%m-%d).sql"
+  echo $dump_name
+}
+
 # Creates DB dump
 createDump(){
   echo
@@ -236,12 +241,12 @@ createDump(){
 
 #    MySQL connection
     if [[ $DB_CONNECTION == "mysql" ]]; then
-      mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > ./$DB_DATABASE.sql
+      mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > $(generateDumpName)
     fi
 
 #    PostgreSQL connection
     if [[ $DB_CONNECTION == "pgsql" ]]; then
-        PGPASSWORD=$DB_PASSWORD pg_dump -U $DB_USERNAME  $DB_DATABASE > ./$DB_DATABASE.sql
+        PGPASSWORD=$DB_PASSWORD pg_dump -U $DB_USERNAME  $DB_DATABASE > $(generateDumpName)
     fi
 
     check_command_exec_status $?
@@ -251,17 +256,17 @@ createDump(){
     # Docker mode
     echo "Making DB dump from Docker container";
     if [[ $DB_CONNECTION == "mysql" ]]; then
-      docker exec $container /usr/bin/mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > $DB_DATABASE.sql
+      docker exec $container /usr/bin/mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > $(generateDumpName)
     fi
     if [[ $DB_CONNECTION == "pgsql" ]]; then
-      docker exec $container /usr/local/bin/pg_dump -U $DB_USERNAME $DB_DATABASE > $DB_DATABASE.sql
+      docker exec $container /usr/local/bin/pg_dump -U $DB_USERNAME $DB_DATABASE > $(generateDumpName)
     fi
 
     check_command_exec_status $?
     #    This is for dumpStats
     remote=3
   fi
-  dbfile="$DB_DATABASE.sql"
+  dbfile=$(generateDumpName)
 }
 
 showCredentials(){
@@ -510,13 +515,11 @@ ChooseDockerContainer(){
     fi
 }
 
-createBackupFolder(){
+checkAndCreateBackupFolder(){
   if [ ! -d $BACKUP_FOLDER ]; then
       echo -e "Making ${WHITE}${BACKUP_FOLDER}${NC} directory for database backups..."
       mkdir $BACKUP_FOLDER
       check_command_exec_status $?
-  else
-      echo -e "Found ${WHITE}${BACKUP_FOLDER}${NC} folder. Continuing ..."
   fi
 }
 
@@ -642,7 +645,7 @@ fi
 
 
 getCredentials
-createBackupFolder
+checkAndCreateBackupFolder
 showdelimiter
 title "Hello from ${YELLOW}${SCRIPT_NAME}${D_VIOL} script!"
 
