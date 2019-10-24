@@ -4,8 +4,19 @@
 # https://github.com/michaelradionov/bdsm
 
 
+
+getBackupsFolderName(){
+  echo "db_backups"
+}
+
+generateDumpName(){
+  dump_name="${DB_DATABASE}_${DB_CONNECTION}_$(date +%Y-%m-%d).sql"
+  echo $dump_name
+}
+
+
 SCRIPT_NAME="bdsm"
-BACKUP_FOLDER="db_backups"
+BACKUP_FOLDER=$(getBackupsFolderName)
 
 # Colors
 L_RED='\033[1;31m'
@@ -223,11 +234,6 @@ unset configFile
 
 }
 
-generateDumpName(){
-  dump_name="${DB_DATABASE}_${DB_CONNECTION}_$(date +%Y-%m-%d).sql"
-  echo $dump_name
-}
-
 # Creates DB dump
 createDump(){
   echo
@@ -236,7 +242,7 @@ createDump(){
      return
   fi
   if [ -z $BACKUP_FOLDER ]; then
-      BACKUP_FOLDER="db_backups"
+      BACKUP_FOLDER=$(getBackupsFolderName)
   fi
   checkAndCreateBackupFolder
   if [[ -z $container ]]; then
@@ -397,7 +403,7 @@ PullDumpFromRemote(){
 #    Triming trailing slash in path
     path=${path%%+(/)}
 #    Creating dump on remote server and echoing only dump name
-    remoteDump=$(ssh -t $host "cd $path && $(declare -f getCredentials createDump check_command_exec_status getFirstContainer generateDumpName checkAndCreateBackupFolder); getCredentials; getFirstContainer  > /dev/null 2>&1 ; createDump > /dev/null 2>&1 ; printf "'$dbfile')
+    remoteDump=$(ssh -t $host "cd $path && $(declare -f getCredentials createDump check_command_exec_status getFirstContainer generateDumpName checkAndCreateBackupFolder getBackupsFolderName); getCredentials; getFirstContainer  > /dev/null 2>&1 ; createDump > /dev/null 2>&1 ; printf "'$dbfile')
     check_command_exec_status $?
 
 #    Pulling dump from remote
