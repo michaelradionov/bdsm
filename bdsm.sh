@@ -5,7 +5,7 @@
 
 
 SCRIPT_NAME="bdsm"
-BACKUP_FOLDER=db_backups
+BACKUP_FOLDER="db_backups"
 
 # Colors
 L_RED='\033[1;31m'
@@ -235,9 +235,13 @@ createDump(){
      echo -e "${L_RED}Sorry, credentials is not set :(${NC}"
      return
   fi
+  if [ -z $BACKUP_FOLDER ]; then
+      BACKUP_FOLDER="db_backups"
+  fi
+  checkAndCreateBackupFolder
   if [[ -z $container ]]; then
     # Not in Docker mode
-    echo "Making DB dump locally";
+    echo "Making DB dump locally in ${BACKUP_FOLDER}/$(generateDumpName)";
 
 #    MySQL connection
     if [[ $DB_CONNECTION == "mysql" ]]; then
@@ -393,13 +397,8 @@ PullDumpFromRemote(){
 #    Triming trailing slash in path
     path=${path%%+(/)}
 #    Creating dump on remote server and echoing only dump name
-    remoteDump=`ssh -t $host "cd $path && $(declare -f getCredentials createDump check_command_exec_status getFirstContainer generateDumpName); getCredentials; getFirstContainer  > /dev/null 2>&1 ; createDump > /dev/null 2>&1 ; printf "'$dbfile'`
+    remoteDump=$(ssh -t $host "cd $path && $(declare -f getCredentials createDump check_command_exec_status getFirstContainer generateDumpName checkAndCreateBackupFolder); getCredentials; getFirstContainer  > /dev/null 2>&1 ; createDump > /dev/null 2>&1 ; printf "'$dbfile')
     check_command_exec_status $?
-
-#    In case $dbfile is not set
-     if [ ! -f "$BACKUP_FOLDER/$dbfile" ]; then
-        dbfile=$remoteDump
-    fi
 
 #    Pulling dump from remote
     remotePath="${host}:${path}/${BACKUP_FOLDER}/${remoteDump}"
