@@ -29,7 +29,7 @@ check_command_exec_status () {
 
 isDumpExists(){
 # If dump doesn't exists
-    if [ ! -f "$dbfile" ]; then
+    if [ ! -f "$BACKUP_FOLDER/$dbfile" ]; then
         echo -e "${L_RED}No DB dump file found!${NC}"
         return 1
     fi
@@ -40,7 +40,7 @@ deleteDump(){
    echo
   isDumpExists || return
   echo "Deleting dump...";
-  rm -f $dbfile
+  rm -f "$BACKUP_FOLDER/$dbfile"
   check_command_exec_status $?
 }
 
@@ -52,7 +52,7 @@ importDump(){
       echo "Importing locally";
 #      MySQL
     if [[ $DB_CONNECTION == "mysql" ]]; then
-      mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE --force < ./$dbfile
+      mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE --force < "$BACKUP_FOLDER/$dbfile"
     fi
 #    PostgreSQL
     if [[ $DB_CONNECTION == "pgsql" ]]; then
@@ -64,7 +64,7 @@ importDump(){
       PGPASSWORD=$DB_PASSWORD createdb -U $DB_USERNAME $DB_DATABASE
         if [[ $? -eq 0 ]]; then
           echo "Importing dump...";
-          PGPASSWORD=$DB_PASSWORD psql --quiet -U $DB_USERNAME  $DB_DATABASE < ./$dbfile
+          PGPASSWORD=$DB_PASSWORD psql --quiet -U $DB_USERNAME  $DB_DATABASE < "$BACKUP_FOLDER/$dbfile"
           check_command_exec_status $?
         fi
       else
@@ -77,7 +77,7 @@ importDump(){
     echo "Importing in Docker Container";
 #    MySQL
     if [[ $DB_CONNECTION == "mysql" ]]; then
-      cat $dbfile | docker exec -i $container /usr/bin/mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE
+      cat "$BACKUP_FOLDER/$dbfile" | docker exec -i $container /usr/bin/mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE
     fi
 #    PostgreSQL
     if [[ $DB_CONNECTION == "pgsql" ]]; then
@@ -93,7 +93,7 @@ importDump(){
         if [[ $? -eq 0 ]]; then
 
           echo "Importing dump...";
-          cat $dbfile | docker exec -i $container /usr/local/bin/psql --quiet -U $DB_USERNAME -d $DB_DATABASE
+          cat "$BACKUP_FOLDER/$dbfile" | docker exec -i $container /usr/local/bin/psql --quiet -U $DB_USERNAME -d $DB_DATABASE
           check_command_exec_status $?
         fi
       else
@@ -138,7 +138,7 @@ SearchInDump(){
     read -p 'Search string: ' old_domain
     echo
     echo -e "Searching for ${WHITE}${old_domain}${NC} in ${WHITE}${dbfile}${NC}";
-    find=`grep -o "$old_domain" "$dbfile" | wc -l | tr -d " "`;
+    find=`grep -o "$old_domain" "$BACKUP_FOLDER/$dbfile" | wc -l | tr -d " "`;
     check_command_exec_status $?
     echo -e "Found ${WHITE}$find${NC} occurrences of $old_domain";
     echo
@@ -157,7 +157,7 @@ searchReplaceInDump(){
   echo
   echo -e "Replacing ${WHITE}${old_domain}${NC} with ${WHITE}${new_domain}${NC} in ${WHITE}${dbfile}${NC}";
 
-   perl -pi -w -e "s|${old_domain}|${new_domain}|g;" "$dbfile"
+   perl -pi -w -e "s|${old_domain}|${new_domain}|g;" "$BACKUP_FOLDER/$dbfile"
    check_command_exec_status $?
 }
 
@@ -241,12 +241,12 @@ createDump(){
 
 #    MySQL connection
     if [[ $DB_CONNECTION == "mysql" ]]; then
-      mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > $(generateDumpName)
+      mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > "${BACKUP_FOLDER}/$(generateDumpName)"
     fi
 
 #    PostgreSQL connection
     if [[ $DB_CONNECTION == "pgsql" ]]; then
-        PGPASSWORD=$DB_PASSWORD pg_dump -U $DB_USERNAME  $DB_DATABASE > $(generateDumpName)
+        PGPASSWORD=$DB_PASSWORD pg_dump -U $DB_USERNAME  $DB_DATABASE > "${BACKUP_FOLDER}/$(generateDumpName)"
     fi
 
     check_command_exec_status $?
@@ -256,10 +256,10 @@ createDump(){
     # Docker mode
     echo "Making DB dump from Docker container";
     if [[ $DB_CONNECTION == "mysql" ]]; then
-      docker exec $container /usr/bin/mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > $(generateDumpName)
+      docker exec $container /usr/bin/mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > "${BACKUP_FOLDER}/$(generateDumpName)"
     fi
     if [[ $DB_CONNECTION == "pgsql" ]]; then
-      docker exec $container /usr/local/bin/pg_dump -U $DB_USERNAME $DB_DATABASE > $(generateDumpName)
+      docker exec $container /usr/local/bin/pg_dump -U $DB_USERNAME $DB_DATABASE > "${BACKUP_FOLDER}/$(generateDumpName)"
     fi
 
     check_command_exec_status $?
@@ -302,9 +302,9 @@ dumpStats(){
         fi
 
         # DB dump
-        if [ -f "$dbfile" ]; then
-            dumpSize=$(du -k -h $dbfile | cut -f1 | tr -d ' ')
-            dumpChangeDate=$(date -r $dbfile)
+        if [ -f "$BACKUP_FOLDER/$dbfile" ]; then
+            dumpSize=$(du -k -h "$BACKUP_FOLDER/$dbfile" | cut -f1 | tr -d ' ')
+            dumpChangeDate=$(date -r "$BACKUP_FOLDER/$dbfile")
             echo -e "DB dump file: ${WHITE}$dbfile${NC}"
             echo -e "DB type: ${WHITE}$DB_CONNECTION${NC}"
             echo -e "Remote or local dump: $(remoteOrLocalDump)"
@@ -397,20 +397,20 @@ PullDumpFromRemote(){
     check_command_exec_status $?
 
 #    In case $dbfile is not set
-     if [ ! -f "$dbfile" ]; then
+     if [ ! -f "$BACKUP_FOLDER/$dbfile" ]; then
         dbfile=$remoteDump
     fi
 
 #    Pulling dump from remote
-    remotePath="${host}:${path}/${remoteDump}"
+    remotePath="${host}:${path}/${BACKUP_FOLDER}/${remoteDump}"
     dbfile=$remoteDump
     echo -e "Pulling dump from remote ${remotePath}"
-    scp "${remotePath}" "${dbfile}"
+    scp "${remotePath}" "${BACKUP_FOLDER}/${dbfile}"
     check_command_exec_status $?
 
 #    Removing dump from remote
     echo -e "Removing dump from remote ${remotePath}"
-    ssh -t $host "cd $path && rm $remoteDump"
+    ssh -t $host "cd $path/$BACKUP_FOLDER && rm $remoteDump"
     check_command_exec_status $?
 
 #    This is for dumpStats
