@@ -68,7 +68,7 @@ You can use **BDSM** as a simple DB backuping tool by putting this to your cron 
 0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd path/to/your/website &&  bdsm --backup"
 ```
 
-where `path/to/your/website` is obviously a path your website!
+where `path/to/your/website` is obviously a path to your website!
 
 ## Features (options)
 
