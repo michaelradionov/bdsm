@@ -43,16 +43,32 @@ eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/mas
 
 
 Since BDSM can install other usefull scripts, you can install ALL OF THEM simply running
-```
+```shell
 bdsm --install-all
 ```
 
-# Usage
+# Usage in interactive mode (for humans)
 
 1. `cd` in website root directory
 2. Execute `bdsm`
 3. Follow instructions. Enjoy! See features description below.
 4. ~~💰 Donate~~. Nah! Just give this repo a star and I will appreciate it! ⭐️
+
+# Usage with flags (for automation)
+
+`--backup` option is made to simply create DB backup file with name like `my_database_mysql_2019-10-25.sql` and put it in `db_backups` folder. `--backup` option will not open interactive mode.
+
+```shell
+bdsm --backup
+```
+
+You can use **BDSM** as a simple DB backuping tool by putting this to your cron job! I suggest you to use it like this 
+
+```shell
+0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd <path/to/your/website> &&  bdsm --backup"
+```
+
+where `path/to/your/website` is obviously is a path your website!
 
 ## Features (options)
 

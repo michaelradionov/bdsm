@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Choosing dump file from list, not typing its name
 - Choosing Docker container from list, not typing its name
 
+## [0.3.0] - 2019-10-25
+### Added
+- **HOT!** Added `--backup` flag to backup database by automatically Cron job!
+- Placing DB dump file to folder
+
 ## [0.2.1] - 2019-10-24
 ### Added
 - Better dump file naming
