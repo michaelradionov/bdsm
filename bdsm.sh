@@ -656,6 +656,18 @@ if [[ $1 == "--install-all" ]]; then
     InstallLaravelAliases
     InstallJiraAliases
     InstallRandomAliases
+
+    return
+fi
+
+if [[ $1 == "--backup" ]]; then
+    showdelimiter
+    title "Backuping database in ${BACKUP_FOLDER} folder..."
+    getCredentials
+    checkAndCreateBackupFolder
+    createDump
+    showdelimiter
+
     return
 fi
 
