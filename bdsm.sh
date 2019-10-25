@@ -521,6 +521,10 @@ ChooseDockerContainer(){
     fi
 }
 
+listDumpFiles(){
+  ls -hlt $BACKUP_FOLDER
+}
+
 checkAndCreateBackupFolder(){
   if [ ! -d $BACKUP_FOLDER ]; then
       echo -e "Making ${WHITE}${BACKUP_FOLDER}${NC} directory for database backups..."
@@ -547,7 +551,8 @@ echo -e "What do you want from me?
     ${WHITE}9.${NC} Install other scripts ${L_RED}HOT!${NC}
     ${WHITE}10.${NC} Look for dump elsewhere locally
     ${WHITE}11.${NC} Enter credentials manually
-    ${WHITE}12.${NC} Choose/forget local Docker container ${YELLOW}NEW!${NC}
+    ${WHITE}12.${NC} Choose/forget local Docker container
+    ${WHITE}13.${NC} List available DB backups ${YELLOW}NEW!${NC}
 
     ${WHITE}p.${NC} Party! Ctrl+C to exit party
     ${WHITE}q.${NC} Exit"
@@ -612,6 +617,11 @@ doStuff(){
       title 'ChooseDockerContainer'
       echo
       ChooseDockerContainer
+    ;;
+    13)
+      title 'listDumpFiles'
+      echo
+      listDumpFiles
     ;;
     'p')
         surprise
