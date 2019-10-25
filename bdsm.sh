@@ -664,6 +664,7 @@ if [[ $1 == "--backup" ]]; then
     showdelimiter
     title "Backuping database in ${BACKUP_FOLDER} folder..."
     getCredentials
+    getFirstContainer
     checkAndCreateBackupFolder
     createDump
     showdelimiter
