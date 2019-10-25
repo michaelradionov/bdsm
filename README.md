@@ -28,13 +28,13 @@ Please request your engine by creating new issue on Github! Give me your engine'
 # Installation
 Fast way (in one step). Worked on Mac, Linux and Windows (terminals with bash support)
 
-Stable version
+Stable version 🌞
 
 ```shell
 eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer bdsm
 ```
 
-Nightly version
+Nightly version 🌚
 
 
 ```shell
@@ -65,10 +65,10 @@ bdsm --backup
 You can use **BDSM** as a simple DB backuping tool by putting this to your cron job! I suggest you to use it like this 
 
 ```shell
-0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd <path/to/your/website> &&  bdsm --backup"
+0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd path/to/your/website &&  bdsm --backup"
 ```
 
-where `path/to/your/website` is obviously is a path your website!
+where `path/to/your/website` is obviously a path your website!
 
 ## Features (options)
 
