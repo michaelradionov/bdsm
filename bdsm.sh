@@ -116,14 +116,15 @@ importDump(){
 
 # Look for dump
 FindDump(){
-  read -p "Enter dump's path (type path to dump, q to exit): " enterDump
+  read -p "Enter dump's file name without folder name (${BACKUP_FOLDER}/) or q to exit: " enterDump
   case $enterDump in
     'q' )
     return
       ;;
     *)
-    if [[ -f "$enterDump" ]]; then
+    if [[ -f "$BACKUP_FOLDER/$enterDump" ]]; then
       echo -e "Ok, I found it. Will look here in next operations."
+      check_command_exec_status $?
       dbfile=$enterDump
     else
       echo -e "${L_RED}Can't find it!${NC}"
