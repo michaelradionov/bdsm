@@ -12,10 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Choosing dump file from list, not typing its name
 - Choosing Docker container from list, not typing its name
 
+## [0.3.2] - 2019-11-12
+### Added
+- Added ability to choose DB dump file from list 
+
 ## [0.3.1] - 2019-10-25
 ### Added
 - Automagically detect Docker
-
 
 ## [0.3.0] - 2019-10-25
 ### Added

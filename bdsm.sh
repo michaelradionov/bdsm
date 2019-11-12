@@ -114,24 +114,6 @@ importDump(){
   fi
 }
 
-# Look for dump
-FindDump(){
-  read -p "Enter dump's file name without folder name (${BACKUP_FOLDER}/) or q to exit: " enterDump
-  case $enterDump in
-    'q' )
-    return
-      ;;
-    *)
-    if [[ -f "$BACKUP_FOLDER/$enterDump" ]]; then
-      echo -e "Ok, I found it. Will look here in next operations."
-      check_command_exec_status $?
-      dbfile=$enterDump
-    else
-      echo -e "${L_RED}Can't find it!${NC}"
-    fi
-    ;;
-  esac
-}
 
 # Enter credentials manually
 EnterCredentials(){
@@ -521,8 +503,33 @@ ChooseDockerContainer(){
     fi
 }
 
-listDumpFiles(){
-  ls -hlt $BACKUP_FOLDER
+chooseDump(){
+
+
+  if [ -z "$(ls -A "$BACKUP_FOLDER")" ]; then
+    echo -e "${L_RED}${BACKUP_FOLDER} is empty!${NC}"
+    return
+  fi
+
+  files=( "${BACKUP_FOLDER}"/* )
+
+  echo "The following DB dump files were found; select one: "
+  echo
+  PS3="Use number to select a file or 'q' to cancel: "
+  select filename in "${files[@]}"
+  do
+      if [[ "$REPLY" == q ]]; then break; fi
+      if [[ "$filename" == "" ]]
+      then
+          echo "'$REPLY' is not a valid number"
+          continue
+      fi
+      dbfile=$(basename $filename)
+      check_command_exec_status $?
+      echo
+      echo "$dbfile choosed"
+      break
+  done
 }
 
 checkAndCreateBackupFolder(){
@@ -549,10 +556,9 @@ echo -e "What do you want from me?
     ${WHITE}7.${NC} Delete Dump
     ${WHITE}8.${NC} Self-update
     ${WHITE}9.${NC} Install other scripts ${L_RED}HOT!${NC}
-    ${WHITE}10.${NC} Look for dump elsewhere locally
+    ${WHITE}10.${NC} Choose DB dump file from ${BACKUP_FOLDER}
     ${WHITE}11.${NC} Enter credentials manually
     ${WHITE}12.${NC} Choose/forget local Docker container
-    ${WHITE}13.${NC} List available DB backups ${YELLOW}NEW!${NC}
 
     ${WHITE}p.${NC} Party! Ctrl+C to exit party
     ${WHITE}q.${NC} Exit"
@@ -604,9 +610,9 @@ doStuff(){
         installOtherScripts
         ;;
     10)
-      title 'FindDump'
+      title 'chooseDump'
       echo
-      FindDump
+      chooseDump
     ;;
     11)
       title 'EnterCredentials'
@@ -617,11 +623,6 @@ doStuff(){
       title 'ChooseDockerContainer'
       echo
       ChooseDockerContainer
-    ;;
-    13)
-      title 'listDumpFiles'
-      echo
-      listDumpFiles
     ;;
     'p')
         surprise
