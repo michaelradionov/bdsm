@@ -230,7 +230,7 @@ createDump(){
   checkAndCreateBackupFolder
   if [[ -z $container ]]; then
     # Not in Docker mode
-    echo "Making DB dump locally in ${BACKUP_FOLDER}/$(generateDumpName)";
+    echo -e "Making DB dump locally in ${WHITE}${BACKUP_FOLDER}/$(generateDumpName)${NC}";
 
 #    MySQL connection
     if [[ $DB_CONNECTION == "mysql" ]]; then
