@@ -679,7 +679,7 @@ getCredentials
 getFirstContainer
 checkAndCreateBackupFolder
 showdelimiter
-title "Hello from ${YELLOW}${SCRIPT_NAME}${D_VIOL} script!"
+title "Hello from ${YELLOW}BDSM${D_VIOL} script!"
 
 while :
     do
