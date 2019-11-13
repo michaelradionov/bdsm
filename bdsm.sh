@@ -10,7 +10,7 @@ getBackupsFolderName(){
 }
 
 generateDumpName(){
-  dump_name="${DB_DATABASE}_${DB_CONNECTION}_$(date +%Y-%m-%d).sql"
+  dump_name="${DB_DATABASE}_${DB_CONNECTION}_$(date +%Y-%m-%d__%H:%M).sql"
   echo $dump_name
 }
 
@@ -515,6 +515,7 @@ chooseDump(){
 
   echo "The following DB dump files were found; select one: "
   echo
+  COLUMNS=12
   PS3="Use number to select a file or 'q' to cancel: "
   select filename in "${files[@]}"
   do
@@ -527,7 +528,7 @@ chooseDump(){
       dbfile=$(basename $filename)
       check_command_exec_status $?
       echo
-      echo "$dbfile choosed"
+      echo -e "${WHITE}$dbfile${NC} choosed"
       break
   done
 }
@@ -556,11 +557,11 @@ echo -e "What do you want from me?
     ${WHITE}7.${NC} Delete Dump
     ${WHITE}8.${NC} Self-update
     ${WHITE}9.${NC} Install other scripts ${L_RED}HOT!${NC}
-    ${WHITE}10.${NC} Choose DB dump file from ${BACKUP_FOLDER}
+    ${WHITE}10.${NC} Choose DB dump file from ${BACKUP_FOLDER} folder ${YELLOW}NEW!${NC}
     ${WHITE}11.${NC} Enter credentials manually
     ${WHITE}12.${NC} Choose/forget local Docker container
 
-    ${WHITE}p.${NC} Party! Ctrl+C to exit party
+    ${WHITE}p.${NC} Party! Ctrl+C to exit the party
     ${WHITE}q.${NC} Exit"
 read -p "Type number (type number of action or 'q' for exit): " action
 }
