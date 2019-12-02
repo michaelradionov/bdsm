@@ -428,7 +428,8 @@ echo -e "What script do you want to install?
     ${WHITE}5.${NC} Install Laravel Aliases — ${YELLOW}https://github.com/michaelradionov/aliases${NC}
     ${WHITE}6.${NC} Install Jira Aliases — ${YELLOW}https://github.com/michaelradionov/aliases${NC}
     ${WHITE}7.${NC} Install Random Aliases — ${YELLOW}https://github.com/michaelradionov/aliases${NC}
-    ${WHITE}8.${NC} Install Docker on Ubuntu 16.04 — ${YELLOW}https://gist.github.com/michaelradionov/84879dc686e7f9e43bc38ecbbd879af4${NC}"
+    ${WHITE}8.${NC} Install Docker on Ubuntu 16.04 — ${YELLOW}https://gist.github.com/michaelradionov/84879dc686e7f9e43bc38ecbbd879af4${NC}
+    ${WHITE}9.${NC} Install Brancher script for switching branches — ${YELLOW}https://github.com/Flagstudio/brancher${NC}"
     read -p "Type number: " script
     case $script in
     1)
@@ -454,6 +455,9 @@ echo -e "What script do you want to install?
      ;;
   8)
         InstallDockerOnUbuntu16
+     ;;
+  9)
+        InstallBrancher
      ;;
     esac
 }
@@ -499,6 +503,11 @@ InstallDockerOnUbuntu16(){
        title "Installing Docker on Ubuntu 16.04"
        echo -e "Check it out at https://gist.github.com/michaelradionov/84879dc686e7f9e43bc38ecbbd879af4"
        curl https://gist.githubusercontent.com/michaelradionov/84879dc686e7f9e43bc38ecbbd879af4/raw/17f942d078b5b2202dd12eab9a5c4d55b4a06259/Docker_Ubuntu_16.sh | sudo bash
+}
+InstallBrancher(){
+       title "Installing Brancher"
+       echo -e "Check it out at https://github.com/Flagstudio/brancher"
+      eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer brancher
 }
 
 
