@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.3.3] - 2019-12-23
+### Added
+- Added brancher script for switching branches (experimental feature for managers)
+- Added my gist to install Docker and docker-compose on Ubuntu 16.04
+
 ## [0.3.2] - 2019-11-12
 ### Added
 - Added ability to choose DB dump file from list 
