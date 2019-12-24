@@ -68,21 +68,23 @@ This command will install:
 `--backup` option is made to simply create DB backup file with name like `my_database_mysql_2019-10-25.sql` and put it in `db_backups` folder. `--backup` option will not open interactive mode.
 
 ```shell
-bdsm --backup
+bdsm --backup [-d <backups folder>]
 ```
+Parameter `-d` is optional. If you won't specify it script will put backups in `db_backups` folder located in current folder.
+
 
 You can use **BDSM** as a simple DB backuping tool by putting this to your cron job! I suggest you to use it like this
 
 ### Every day job
 
 ```shell
-0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd path/to/your/website &&  bdsm --backup"
+0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd <website path> &&  bdsm --backup -d <backups folder>"
 ```
 
 ### Every week job
 
 ```shell
-0 0 * * 0 /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd path/to/your/website &&  bdsm --backup"
+0 0 * * 0 /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd <website path> &&  bdsm --backup -d <backups folder>"
 ```
 
 

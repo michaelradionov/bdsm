@@ -687,19 +687,6 @@ do
     return
     ;;
 
-  "--backup")
-
-    showdelimiter
-    title "Backuping database in ${BACKUP_FOLDER} folder..."
-    getCredentials
-    getFirstContainer
-    checkAndCreateBackupFolder
-    createDump
-    showdelimiter
-
-    return
-    ;;
-
   "--nightly")
 
     showdelimiter
@@ -712,6 +699,46 @@ do
     check_command_exec_status $?
 
     echo -e "To switch back to stable mode please install BDSM as usual with default command. More info https://github.com/michaelradionov/bdsm"
+
+    return
+    ;;
+
+  "--backup")
+
+    showdelimiter
+    title "Backuping database in ${BACKUP_FOLDER} folder..."
+    showdelimiter
+    getCredentials
+    getFirstContainer
+    shift # Getting rid of "--backup" parameter
+
+    while [ -n "$1" ]
+    do
+      case "$1" in
+      -d)
+
+        if [ -z "$2" ]; then
+           echo -e "${L_RED}You must specify backups path if using the \"-d\" flag${NC}"
+           return
+        fi
+
+        if [ ! -d "$2" ]; then
+           echo -e "${L_RED}$2 folder doesn't exist!${NC}"
+           return
+        fi
+
+        echo -e "Changing backup folder path to ${WHITE}$2${NC}"
+        BACKUP_FOLDER=$2
+        check_command_exec_status $?
+
+      shift
+      ;;
+      *) echo "$1 is not a valid option. More info https://github.com/michaelradionov/bdsm";;
+      esac
+    shift
+    done
+    createDump
+    showdelimiter
 
     return
     ;;
