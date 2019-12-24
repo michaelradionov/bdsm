@@ -34,18 +34,27 @@ Stable version 🌞
 eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer bdsm
 ```
 
-Nightly version 🌚
+Switch to nightly version 🌚
 
 
 ```shell
-eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer bdsm_nightly
+bdsm --nightly
 ```
 
 
-Since BDSM can install other usefull scripts, you can install ALL OF THEM simply running
+Since BDSM can install other usefull scripts, you can install them simply running
 ```shell
 bdsm --install-all
 ```
+
+This command will install:
+- [Git aliases](https://github.com/michaelradionov/aliases/blob/master/aliases_git2.sh)
+- [HelloBash script](https://github.com/michaelradionov/helloBash)
+- My favorite [Micro Editor](https://micro-editor.github.io/)
+- [Laravel aliases](https://github.com/michaelradionov/aliases/blob/master/laravel_aliases.sh)
+- [Docker aliases](https://github.com/michaelradionov/aliases/blob/master/docker_aliases.sh)
+- [Jira aliases](https://github.com/michaelradionov/aliases/blob/master/jira_aliases.sh)
+- [Random aliases](https://github.com/michaelradionov/aliases/blob/master/random_aliases.sh)
 
 # Usage in interactive mode (for humans)
 

@@ -14,17 +14,18 @@ generateDumpName(){
   echo $dump_name
 }
 
-
-SCRIPT_NAME="bdsm"
-BACKUP_FOLDER=$(getBackupsFolderName)
+# Variables
+  SCRIPT_NAME="bdsm"
+  BACKUP_FOLDER=$(getBackupsFolderName)
+  SCRIPTS_FOLDER=~/.gg_tools
 
 # Colors
-L_RED='\033[1;31m'
-YELLOW='\033[1;33m'
-WHITE='\033[1;37m'
-D_GREY='\033[1;30m'
-D_VIOL='\033[1;34m'
-NC='\033[0m'
+  L_RED='\033[1;31m'
+  YELLOW='\033[1;33m'
+  WHITE='\033[1;37m'
+  D_GREY='\033[1;30m'
+  D_VIOL='\033[1;34m'
+  NC='\033[0m'
 
 # Check previous command error status
 check_command_exec_status () {
@@ -695,6 +696,22 @@ do
     checkAndCreateBackupFolder
     createDump
     showdelimiter
+
+    return
+    ;;
+
+  "--nightly")
+
+    showdelimiter
+    title "Installing BDSM in nightly mode..."
+    eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer bdsm_nightly
+    check_command_exec_status $?
+
+    echo -e "Removing ${SCRIPTS_FOLDER}/${SCRIPT_NAME}.sh ..."
+    rm ${SCRIPTS_FOLDER}/${SCRIPT_NAME}.sh
+    check_command_exec_status $?
+
+    echo -e "To switch back to stable mode please install BDSM as usual with default command. More info https://github.com/michaelradionov/bdsm"
 
     return
     ;;
