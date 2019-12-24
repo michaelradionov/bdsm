@@ -666,8 +666,15 @@ doStuff(){
 
 bdsm(){
 
-if [[ $1 == "--install-all" ]]; then
-    title "Installing ALL the stuff"
+# First we'll check input flags
+while [ -n "$1" ]
+do
+  case "$1" in
+
+  "--install-all")
+
+    showdelimiter
+    title "Installing ALL the stuff..."
     InstallGoGitAliases
     InstallHelloBash
     InstallMicroEditor
@@ -677,9 +684,10 @@ if [[ $1 == "--install-all" ]]; then
     InstallRandomAliases
 
     return
-fi
+    ;;
 
-if [[ $1 == "--backup" ]]; then
+  "--backup")
+
     showdelimiter
     title "Backuping database in ${BACKUP_FOLDER} folder..."
     getCredentials
@@ -689,8 +697,19 @@ if [[ $1 == "--backup" ]]; then
     showdelimiter
 
     return
-fi
+    ;;
 
+  *)
+
+    echo -e "${L_RED}$1 is not an option${NC}"
+    return
+    ;;
+
+  esac
+shift
+done
+
+# If there is no inputs then we go interactive
 
 getCredentials
 getFirstContainer
