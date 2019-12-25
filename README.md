@@ -66,12 +66,15 @@ This command will install:
 
 # Usage with flags (for automation)
 
-`--backup` option is made to simply create DB backup file with name like `my_database_mysql_2019-10-25.sql` and put it in `db_backups` folder. `--backup` option will not open interactive mode.
+`--backup` option is made to simply create DB backup file with name like `my_database_mysql_2019-10-25.sql` and quit. `--backup` option will not open interactive mode.
 
 ```shell
-bdsm --backup [-d <backups folder>]
+bdsm --backup [-d <backups folder>] [-n <backups max count>]
 ```
-Parameter `-d` is optional. If you won't specify it script will put backups in `db_backups` folder located in current folder.
+
+## Parameters
+- `-d` is optional parameter. Use it to specify backups directory. By default, script will use `bd_backups` folder in root of your project (website)
+- `-n` is optional parameter. USe it to limit total number of backups. By default, there is no limit. 
 
 
 You can use **BDSM** as a simple DB backuping tool by putting this to your cron job! I suggest you to use it like this

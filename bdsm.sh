@@ -559,6 +559,19 @@ checkAndCreateBackupFolder(){
   fi
 }
 
+count_dumps_and_remove_old_dumps_by_count(){
+    BACKUPS_COUNT_LIMIT=$1
+    BACKUPS_COUNT=$(ls -1q "$BACKUP_FOLDER" | wc -l)
+    echo -e "There is $BACKUPS_COUNT files in $BACKUP_FOLDER"
+
+    if [ "$BACKUPS_COUNT" -gt "$BACKUPS_COUNT_LIMIT" ]; then
+      echo -e "You have ${WHITE}$BACKUPS_COUNT${NC} backups and backup limit is ${WHITE}$BACKUPS_COUNT_LIMIT${NC}"
+      echo -e "${L_RED}Removing extras...${NC}"
+      ls -tp "$BACKUP_FOLDER" | grep -v '/$' | tail -n +$((BACKUPS_COUNT_LIMIT + 1)) | awk "{print \"$BACKUP_FOLDER/\"\$1}" | xargs -I {} rm {}
+    fi
+}
+
+
 
 askUserNoVariants(){
     read -p "What do you want from me? (type number of action, 'q' or enter for help): " action
@@ -706,7 +719,7 @@ do
   "--backup")
 
     showdelimiter
-    title "Backuping database in ${BACKUP_FOLDER} folder..."
+    title "Automatic (Cron) mode"
     showdelimiter
     getCredentials
     getFirstContainer
@@ -718,7 +731,7 @@ do
       -d)
 
         if [ -z "$2" ]; then
-           echo -e "${L_RED}You must specify backups path if using the \"-d\" flag${NC}"
+           echo -e "${L_RED}You must specify backups path when using the \"-d\" flag!${NC}"
            return
         fi
 
@@ -731,14 +744,36 @@ do
         BACKUP_FOLDER=$2
         check_command_exec_status $?
 
-      shift
+      shift # Getting rid of <path> parameter
       ;;
+
+      -n)
+
+        if [ -z "$2" ]; then
+           echo -e "${L_RED}You must specify backups number using the \"-n\" flag!${NC}"
+           return
+        fi
+
+        if ! [[ "$2" =~ ^[0-9]+$ ]]; then
+           echo -e "${L_RED}$2 is not an integer!${NC}"
+           return
+        fi
+
+        BACKUPS_COUNT_LIMIT=$2
+
+      shift # Getting rid of <count> parameter
+      ;;
+
       *) echo "$1 is not a valid option. More info https://github.com/michaelradionov/bdsm";;
       esac
-    shift
+    shift # Getting rid of '-d' or '-n' parameters
     done
+
     createDump
-    showdelimiter
+
+    if ! [ -z "$BACKUPS_COUNT_LIMIT" ]; then
+      count_dumps_and_remove_old_dumps_by_count "$BACKUPS_COUNT_LIMIT"
+    fi
 
     return
     ;;
