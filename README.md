@@ -41,6 +41,7 @@ Switch to nightly version 🌚
 bdsm --nightly
 ```
 
+# Other our scripts installation
 
 Since BDSM can install other usefull scripts, you can install them simply running
 ```shell
