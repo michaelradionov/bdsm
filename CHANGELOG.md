@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.3.4] - 2019-12-25
+### Added
+- Added ability to specify backups location for Cron tasks with something like `bdsm --backup -d /some/folder/`
+- Nightly installation now made with the flag `--nightly` 
+
 ## [0.3.3] - 2019-12-23
 ### Added
 - Added brancher script for switching branches (experimental feature for managers)
