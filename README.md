@@ -72,6 +72,12 @@ This command will install:
 bdsm --backup [-d <backups folder>] [-n <backups max count>]
 ```
 
+Example:
+
+```shell
+bdsm --backup -d /backups/ -n 14
+```
+
 ## Parameters
 - `-d` is optional parameter. Use it to specify backups directory. By default, script will use `bd_backups` folder in root of your project (website)
 - `-n` is optional parameter. USe it to limit total number of backups. By default, there is no limit. 
