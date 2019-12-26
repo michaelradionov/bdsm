@@ -543,7 +543,7 @@ chooseDump(){
           echo "'$REPLY' is not a valid number"
           continue
       fi
-      dbfile=$(basename $filename)
+      dbfile=$(basename "$filename")
       check_command_exec_status $?
       echo
       echo -e "${WHITE}$dbfile${NC} choosed"
@@ -552,9 +552,12 @@ chooseDump(){
 }
 
 checkAndCreateBackupFolder(){
-  if [ ! -d $BACKUP_FOLDER ]; then
+
+  if [ -n "$1" ]; then BACKUP_FOLDER=$1; fi
+
+  if [ ! -d "$BACKUP_FOLDER" ]; then
       echo -e "Making ${WHITE}${BACKUP_FOLDER}${NC} directory for database backups..."
-      mkdir $BACKUP_FOLDER
+      mkdir -p "$BACKUP_FOLDER"
       check_command_exec_status $?
   fi
 }
@@ -737,7 +740,7 @@ do
 
         if [ ! -d "$2" ]; then
            echo -e "${L_RED}$2 folder doesn't exist!${NC}"
-           return
+           checkAndCreateBackupFolder "$2"
         fi
 
         echo -e "Changing backup folder path to ${WHITE}$2${NC}"
