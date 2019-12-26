@@ -97,7 +97,7 @@ For example, you can keep 7 daily backups, 4 weekly and 6 monthly backups in dif
 
 ```shell
 WEBSITE_PATH=<website path>
-BACKUPS_PATH=/backups
+BACKUPS_PATH=/db_backups
 
 # 7 daily backups
 0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd "$WEBSITE_PATH" &&  bdsm --backup -d "$BACKUPS_PATH"/daily -n 7"
