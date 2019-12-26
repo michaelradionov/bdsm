@@ -93,7 +93,7 @@ Daily Cron job example:
 0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd <website path> &&  bdsm --backup -d <backups folder>"
 ```
 
-For example, you can keep 7 daily backups, 4 weekly and 3 monthly backups in different folders like this
+For example, you can keep 7 daily backups, 4 weekly and 6 monthly backups in different folders like this
 
 ```shell
 WEBSITE_PATH=<website path>
@@ -104,8 +104,8 @@ WEBSITE_PATH=<website path>
 # 4 weekly backups
 0 0 * * 0 /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd $WEBSITE_PATH &&  bdsm --backup -d /db_backups/weekly -n 4"
 
-# 3 monthly backups
-0 0 1 * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd $WEBSITE_PATH &&  bdsm --backup -d /db_backups/monthly -n 3"
+# 6 monthly backups
+0 0 1 * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd $WEBSITE_PATH &&  bdsm --backup -d /db_backups/monthly -n 6"
 ```
 
 
