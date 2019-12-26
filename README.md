@@ -85,16 +85,26 @@ bdsm --backup -d /backups/ -n 14
 
 You can use **BDSM** as a simple DB backuping tool by putting this to your cron job! I suggest you to use it like this
 
-### Every day job
+### Cron jobs
+
+Daily Cron job example:
 
 ```shell
 0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd <website path> &&  bdsm --backup -d <backups folder>"
 ```
 
-### Every week job
+For example, you can keep 7 daily backups, 4 weekly and 3 monthly backups in different folders like this
 
 ```shell
-0 0 * * 0 /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd <website path> &&  bdsm --backup -d <backups folder>"
+WEBSITE_PATH=<website path>
+# 7 daily backups
+0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd $WEBSITE_PATH &&  bdsm --backup -d /backups/daily"
+
+# 4 weekly backups
+0 0 * * 0 /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd $WEBSITE_PATH &&  bdsm --backup -d /backups/weekly"
+
+# 3 monthly backups
+0 0 1 * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd $WEBSITE_PATH &&  bdsm --backup -d /backups/monthly"
 ```
 
 
