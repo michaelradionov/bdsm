@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.3.6] - 2019-12-26
+### Added
+- Various fixes to easily make several cron jobs for different backuping periods     
+
 ## [0.3.5] - 2019-12-25
 ### Added
 - Added ability to limit max backups quantity by flag with something like `bdsm --backup -n 10`
