@@ -10,7 +10,7 @@ getBackupsFolderName(){
 }
 
 generateDumpName(){
-  dump_name="${DB_DATABASE}_${DB_CONNECTION}_$(date +%Y-%m-%d__%H:%M).sql"
+  dump_name="${DB_DATABASE}_${DB_CONNECTION}_$(date +%Y-%m-%d__%H-%M).sql"
   echo $dump_name
 }
 
