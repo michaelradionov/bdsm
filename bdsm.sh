@@ -785,6 +785,7 @@ do
 #    ZIP backup because CLI flag input
     if [ -n "$ZIP_BACKUP" ]; then
       tar --remove-files -czf "$BACKUP_FOLDER/$dbfile.tar.gz" "$BACKUP_FOLDER/$dbfile"
+      dbfile="$BACKUP_FOLDER/$dbfile.tar.gz"
     fi
 
     return

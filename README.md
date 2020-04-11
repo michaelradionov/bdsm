@@ -80,7 +80,8 @@ bdsm --backup -d /backups/ -n 14
 
 ## Parameters
 - `-d` is optional parameter. Use it to specify backups directory. By default, script will use `bd_backups` folder in root of your project (website)
-- `-n` is optional parameter. USe it to limit total number of backups. By default, there is no limit. 
+- `-n` is optional parameter. Use it to limit total number of backups. By default, there is no limit. 
+- `--zip` is optional parameter. Use it to automatically compress database backups with tar (tar.gz)
 
 
 You can use **BDSM** as a simple DB backuping tool by putting this to your cron job! I suggest you to use it like this
@@ -90,7 +91,7 @@ You can use **BDSM** as a simple DB backuping tool by putting this to your cron 
 Daily Cron job example:
 
 ```shell
-0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd <website path> &&  bdsm --backup -d <backups folder>"
+0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd <website path> &&  bdsm --backup --zip -d <backups folder>"
 ```
 
 For example, you can keep 7 daily backups, 4 weekly and 6 monthly backups in different folders like this
@@ -100,13 +101,13 @@ WEBSITE_PATH=<website path>
 BACKUPS_PATH=/db_backups
 
 # 7 daily backups
-0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd "$WEBSITE_PATH" &&  bdsm --backup -d "$BACKUPS_PATH"/daily -n 7"
+0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd "$WEBSITE_PATH" &&  bdsm --zip --backup -d "$BACKUPS_PATH"/daily -n 7"
 
 # 4 weekly backups
-0 0 * * 0 /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd "$WEBSITE_PATH" &&  bdsm --backup -d "$BACKUPS_PATH"/weekly -n 4"
+0 0 * * 0 /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd "$WEBSITE_PATH" &&  bdsm --zip --backup -d "$BACKUPS_PATH"/weekly -n 4"
 
 # 6 monthly backups
-0 0 1 * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd "$WEBSITE_PATH" &&  bdsm --backup -d "$BACKUPS_PATH"/monthly -n 6"
+0 0 1 * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd "$WEBSITE_PATH" &&  bdsm --zip --backup -d "$BACKUPS_PATH"/monthly -n 6"
 ```
 
 
