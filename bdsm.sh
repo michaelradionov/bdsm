@@ -766,16 +766,25 @@ do
 
       shift # Getting rid of <count> parameter
       ;;
+      --zip)
+        ZIP_BACKUP=true
+      ;;
 
       *) echo "$1 is not a valid option. More info https://github.com/michaelradionov/bdsm";;
       esac
-    shift # Getting rid of '-d' or '-n' parameters
+    shift # Getting rid of '-d' or '-n' or '--zip' parameters
     done
 
     createDump
 
+#    Clean up backups because CLI flag input
     if ! [ -z "$BACKUPS_COUNT_LIMIT" ]; then
       count_dumps_and_remove_old_dumps_by_count "$BACKUPS_COUNT_LIMIT"
+    fi
+
+#    ZIP backup because CLI flag input
+    if [ -n "$ZIP_BACKUP" ]; then
+      tar --remove-files -czf "$BACKUP_FOLDER/$dbfile.tar.gz" "$BACKUP_FOLDER/$dbfile"
     fi
 
     return
