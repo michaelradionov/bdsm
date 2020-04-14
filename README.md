@@ -69,13 +69,13 @@ This command will install:
 `--backup` option is made to simply create DB backup file with name like `my_database_mysql_2019-10-25.sql` and quit. `--backup` option will not open interactive mode.
 
 ```shell
-bdsm --backup [-d <backups folder>] [-n <backups max count>]
+bdsm --backup [-d <backups folder>] [-n <backups max count>] [--zip]
 ```
 
 Example:
 
 ```shell
-bdsm --backup -d /backups/ -n 14
+bdsm --backup -d /backups/ -n 14 --zip
 ```
 
 ## Parameters
@@ -91,7 +91,7 @@ You can use **BDSM** as a simple DB backuping tool by putting this to your cron 
 Daily Cron job example:
 
 ```shell
-0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd <website path> &&  bdsm --backup --zip -d <backups folder>"
+0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd <website path> &&  bdsm --backup -d <backups folder>  --zip "
 ```
 
 For example, you can keep 7 daily backups, 4 weekly and 6 monthly backups in different folders like this
@@ -101,13 +101,13 @@ WEBSITE_PATH=<website path>
 BACKUPS_PATH=/db_backups
 
 # 7 daily backups
-0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd "$WEBSITE_PATH" &&  bdsm --zip --backup -d "$BACKUPS_PATH"/daily -n 7"
+0 0 * * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd "$WEBSITE_PATH" &&  bdsm --backup -d "$BACKUPS_PATH"/daily -n 7  --zip"
 
 # 4 weekly backups
-0 0 * * 0 /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd "$WEBSITE_PATH" &&  bdsm --zip --backup -d "$BACKUPS_PATH"/weekly -n 4"
+0 0 * * 0 /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd "$WEBSITE_PATH" &&  bdsm --backup -d "$BACKUPS_PATH"/weekly -n 4 --zip"
 
 # 6 monthly backups
-0 0 1 * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd "$WEBSITE_PATH" &&  bdsm --zip --backup -d "$BACKUPS_PATH"/monthly -n 6"
+0 0 1 * * /bin/bash -c "source ~/.gg_tools/bdsm.sh && cd "$WEBSITE_PATH" &&  bdsm --backup -d "$BACKUPS_PATH"/monthly -n 6 --zip"
 ```
 
 
