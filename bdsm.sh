@@ -501,9 +501,9 @@ InstallRandomAliases(){
 
 }
 InstallDockerOnUbuntu16(){
-       title "Installing Docker on Ubuntu 16.04"
+       title "Installing Docker on Ubuntu"
        echo -e "Check it out at https://gist.github.com/michaelradionov/84879dc686e7f9e43bc38ecbbd879af4"
-       curl https://gist.githubusercontent.com/michaelradionov/84879dc686e7f9e43bc38ecbbd879af4/raw/17f942d078b5b2202dd12eab9a5c4d55b4a06259/Docker_Ubuntu_16.sh | sudo bash
+       curl https://gist.githubusercontent.com/michaelradionov/84879dc686e7f9e43bc38ecbbd879af4/raw/e8027dd815106ad3b9351750beb3e09f4fffc7d8/Docker_Ubuntu_16.sh | sudo bash
 }
 InstallBrancher(){
        title "Installing Brancher"
