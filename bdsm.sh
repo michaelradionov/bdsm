@@ -18,6 +18,7 @@ generateDumpName(){
   SCRIPT_NAME="bdsm"
   BACKUP_FOLDER=$(getBackupsFolderName)
   SCRIPTS_FOLDER=~/.gg_tools
+  BDSM_VERSION="v0.3.8"
 
 # Colors
   L_RED='\033[1;31m'
@@ -807,7 +808,7 @@ getCredentials
 getFirstContainer
 checkAndCreateBackupFolder
 showdelimiter
-title "Hello from ${YELLOW}BDSM${D_VIOL} script!"
+title "Hello from ${YELLOW}BDSM${D_VIOL} script ${YELLOW}${BDSM_VERSION}${D_VIOL}!"
 
 while :
     do

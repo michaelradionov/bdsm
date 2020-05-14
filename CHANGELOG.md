@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.8] - 2020-05-14
 ### Added
-- Backuping without locking tables   
+- Backuping without locking tables
+- Added script version in greetings   
 
 ## [0.3.7] - 2020-04-11
 ### Added
