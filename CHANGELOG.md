@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.3.8] - 2020-05-14
+### Added
+- Backuping without locking tables   
+
 ## [0.3.7] - 2020-04-11
 ### Added
 - "--zip" flag for cron backup mode which compresses backups with tar (tar.gz).   
