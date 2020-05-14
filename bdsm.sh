@@ -235,7 +235,7 @@ createDump(){
 
 #    MySQL connection
     if [[ $DB_CONNECTION == "mysql" ]]; then
-      mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > "${BACKUP_FOLDER}/$(generateDumpName)"
+      mysqldump --insert-ignore --skip-lock-tables --single-transaction=TRUE -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > "${BACKUP_FOLDER}/$(generateDumpName)"
     fi
 
 #    PostgreSQL connection
@@ -250,7 +250,7 @@ createDump(){
     # Docker mode
     echo "Making DB dump from Docker container";
     if [[ $DB_CONNECTION == "mysql" ]]; then
-      docker exec $container /usr/bin/mysqldump --single-transaction -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > "${BACKUP_FOLDER}/$(generateDumpName)"
+      docker exec $container /usr/bin/mysqldump --insert-ignore --skip-lock-tables --single-transaction=TRUE -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > "${BACKUP_FOLDER}/$(generateDumpName)"
     fi
     if [[ $DB_CONNECTION == "pgsql" ]]; then
       docker exec $container /usr/local/bin/pg_dump -U $DB_USERNAME $DB_DATABASE > "${BACKUP_FOLDER}/$(generateDumpName)"
