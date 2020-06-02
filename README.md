@@ -34,12 +34,6 @@ Stable version 🌞
 eval "$(curl "https://raw.githubusercontent.com/michaelradionov/gg_installer/master/gg_installer.sh")" && gg_installer bdsm
 ```
 
-Switch to nightly version 🌚
-
-
-```shell
-bdsm --nightly
-```
 
 # Other our scripts installation
 

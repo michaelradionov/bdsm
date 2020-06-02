@@ -430,8 +430,8 @@ echo -e "What script do you want to install?
     ${WHITE}5.${NC} Install Laravel Aliases — ${YELLOW}https://github.com/michaelradionov/aliases${NC}
     ${WHITE}6.${NC} Install Jira Aliases — ${YELLOW}https://github.com/michaelradionov/aliases${NC}
     ${WHITE}7.${NC} Install Random Aliases — ${YELLOW}https://github.com/michaelradionov/aliases${NC}
-    ${WHITE}8.${NC} Install Docker on Ubuntu 16.04 — ${YELLOW}https://gist.github.com/michaelradionov/84879dc686e7f9e43bc38ecbbd879af4${NC}
-    ${WHITE}9.${NC} Install Brancher script for switching branches — ${YELLOW}https://github.com/Flagstudio/brancher${NC}"
+    ${WHITE}8.${NC} Install Docker on Ubuntu 16.04 — ${YELLOW}https://gist.github.com/michaelradionov/84879dc686e7f9e43bc38ecbbd879af4${NC}"
+#    ${WHITE}9.${NC} Install Brancher script for switching branches — ${YELLOW}https://github.com/Flagstudio/brancher${NC}"
     read -p "Type number: " script
     case $script in
     1)
