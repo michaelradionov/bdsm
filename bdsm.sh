@@ -174,6 +174,7 @@ unset configFile
       DB_DATABASE=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
       DB_USERNAME=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
       DB_PASSWORD=`cat "$configFile" | grep DB_PASSWORD | cut -d \' -f 4`
+      COMPOSE_PROJECT_NAME=`cat "$configFile" | grep COMPOSE_PROJECT_NAME | cut -d \' -f 4`
       DB_CONNECTION='mysql'
 
 # WordPress from wp-content. Long story. We have some oldest repos in wp-content folder
@@ -184,6 +185,7 @@ unset configFile
       DB_DATABASE=`cat "$configFile" | grep DB_NAME | cut -d \' -f 4`
       DB_USERNAME=`cat "$configFile" | grep DB_USER | cut -d \' -f 4`
       DB_PASSWORD=`cat "$configFile" | grep DB_PASSWORD | cut -d \' -f 4`
+      COMPOSE_PROJECT_NAME=`cat "$configFile" | grep COMPOSE_PROJECT_NAME | cut -d \' -f 4`
       DB_CONNECTION='mysql'
 
 # Laravel
@@ -409,10 +411,10 @@ PullDumpFromRemote(){
 
 getFirstContainer(){
   if [[ $DB_CONNECTION == "mysql" ]]; then
-    container=$(docker ps --format {{.Names}} | grep mysql)
+    container=$(docker ps --format {{.Names}} | grep ${COMPOSE_PROJECT_NAME}_mysql)
   fi
   if [[ $DB_CONNECTION == "pgsql" ]]; then
-    container=$(docker ps --format {{.Names}} | grep postgres)
+    container=$(docker ps --format {{.Names}} | grep ${COMPOSE_PROJECT_NAME}_postgres)
   fi
 }
 
