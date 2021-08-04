@@ -232,18 +232,23 @@ createDump(){
       BACKUP_FOLDER=$(getBackupsFolderName)
   fi
   checkAndCreateBackupFolder
+
+  dbfile=$(generateDumpName)
+
+  dumpFilePath="${BACKUP_FOLDER}/${dbfile}"
+
   if [[ -z $container ]]; then
     # Not in Docker mode
-    echo -e "Making DB dump locally in ${WHITE}${BACKUP_FOLDER}/$(generateDumpName)${NC}";
+    echo -e "Making DB dump locally in ${WHITE}${dumpFilePath}${NC}";
 
 #    MySQL connection
     if [[ $DB_CONNECTION == "mysql" ]]; then
-      mysqldump --insert-ignore --skip-lock-tables --single-transaction=TRUE -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > "${BACKUP_FOLDER}/$(generateDumpName)"
+      mysqldump --insert-ignore --skip-lock-tables --single-transaction=TRUE -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > $dumpFilePath
     fi
 
 #    PostgreSQL connection
     if [[ $DB_CONNECTION == "pgsql" ]]; then
-        PGPASSWORD=$DB_PASSWORD pg_dump -U $DB_USERNAME  $DB_DATABASE > "${BACKUP_FOLDER}/$(generateDumpName)"
+        PGPASSWORD=$DB_PASSWORD pg_dump -U $DB_USERNAME  $DB_DATABASE > $dumpFilePath
     fi
 
     check_command_exec_status $?
@@ -252,18 +257,18 @@ createDump(){
   else
     # Docker mode
     echo "Making DB dump from Docker container";
+
     if [[ $DB_CONNECTION == "mysql" ]]; then
-      docker exec $container /usr/bin/mysqldump --insert-ignore --skip-lock-tables --single-transaction=TRUE -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > "${BACKUP_FOLDER}/$(generateDumpName)"
+      docker exec $container /usr/bin/mysqldump --insert-ignore --skip-lock-tables --single-transaction=TRUE -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > $dumpFilePath
     fi
     if [[ $DB_CONNECTION == "pgsql" ]]; then
-      docker exec $container /usr/local/bin/pg_dump -U $DB_USERNAME $DB_DATABASE > "${BACKUP_FOLDER}/$(generateDumpName)"
+      docker exec $container /usr/local/bin/pg_dump -U $DB_USERNAME $DB_DATABASE > $dumpFilePath
     fi
 
     check_command_exec_status $?
     #    This is for dumpStats
     remote=3
   fi
-  dbfile=$(generateDumpName)
 }
 
 showCredentials(){
