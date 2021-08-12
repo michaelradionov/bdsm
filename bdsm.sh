@@ -18,7 +18,7 @@ generateDumpName(){
   SCRIPT_NAME="bdsm"
   BACKUP_FOLDER=$(getBackupsFolderName)
   SCRIPTS_FOLDER=~/.gg_tools
-  BDSM_VERSION="v0.3.8"
+  BDSM_VERSION="v0.3.9"
 
 # Colors
   L_RED='\033[1;31m'
