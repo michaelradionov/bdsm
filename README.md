@@ -152,3 +152,8 @@ If you have literally ANY trouble with installing and using script, please, crea
 # Changelog
 
 [Changelog](https://github.com/michaelradionov/bdsm/blob/master/CHANGELOG.md)
+
+# Contribution
+
+1. Edit the variable `BDSM_VERSION` in **bdsm.sh**
+2. Update **CHANGELOG.md**
