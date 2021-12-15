@@ -18,7 +18,7 @@ generateDumpName(){
   SCRIPT_NAME="bdsm"
   BACKUP_FOLDER=$(getBackupsFolderName)
   SCRIPTS_FOLDER=~/.gg_tools
-  BDSM_VERSION="v0.3.9"
+  BDSM_VERSION="v0.3.10"
 
 # Colors
   L_RED='\033[1;31m'
@@ -70,7 +70,7 @@ importDump(){
 #    PostgreSQL
     if [[ $DB_CONNECTION == "pgsql" ]]; then
       echo "Droping DB...";
-      PGPASSWORD=$DB_PASSWORD dropdb -U $DB_USERNAME $DB_DATABASE
+      PGPASSWORD=$DB_PASSWORD dropdb --if-exists -U $DB_USERNAME $DB_DATABASE
 
       if [[ $? -eq 0 ]]; then
       echo "Creating DB...";
@@ -96,7 +96,7 @@ importDump(){
     if [[ $DB_CONNECTION == "pgsql" ]]; then
 
       echo "Droping DB...";
-      docker exec -i $container /usr/local/bin/dropdb -U $DB_USERNAME $DB_DATABASE
+      docker exec -i $container /usr/local/bin/dropdb --if-exists -U $DB_USERNAME $DB_DATABASE
 
       if [[ $? -eq 0 ]]; then
 
